@@ -99,5 +99,21 @@ Ext.define('Sgis.map.CoreMap', {
 		  });
 		var baseMap = new CustomMapsLayer();
 		this.map.addLayer(baseMap);
+	},
+	
+	mapReisze:function(){
+		var me  = this;
+		if(this.map){
+			var xmin = this.map.extent.xmin;
+			var ymin = this.map.extent.ymin;
+			var xmax = this.map.extent.xmax;
+			var ymax = this.map.extent.ymax;
+			var extent = new esri.geometry.Extent(xmin, ymin, xmax, ymax, new esri.SpatialReference({wkid: 102100}));
+			var handler = dojo.connect(this.map, "onExtentChange", function(eve){
+				me.map.centerAt(extent.getCenter());
+				dojo.disconnect(handler);  
+			});
+			this.map.resize();	
+		}
 	}
 });

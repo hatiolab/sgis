@@ -1,2 +1,2 @@
 // @tag full-page
-// @require D:\ash\workspace\sgis\app.js
+// @require C:\Users\Administrator\git\sgis\app.js

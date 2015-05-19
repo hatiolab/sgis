@@ -1,156 +1,95 @@
 [{
-	"id" : "1",
+	"id" : "p1",
     "text": "지하수", 
     "expanded": true,
     "checked": false,
     "children": [{
-		"id" : "11",
+		"id" : "1",
         "text": "지하수오염 우려지역",
         "leaf": true,
         "checked": false
     },{
-		"id" : "12",
+		"id" : "2",
         "text": "지하수 일반지역",
         "leaf": true,
         "checked": false
     },{
-		"id" : "13",
+		"id" : "3",
         "text": "지하수 배경수질",
+        "leaf": true,
+        "checked": false
+    },{
+		"id" : "4",
+        "text": "지하수오염원감지",
+        "leaf": true,
+        "checked": false
+    },{
+		"id" : "5",
+        "text": "지하수관정정보",
+        "leaf": true,
+        "checked": false
+    },{
+		"id" : "6",
+        "text": "자연방사선실태조사",
+        "leaf": true,
+        "checked": false
+    },{
+		"id" : "14",
+        "text": "지하수 오염원감시",
         "leaf": true,
         "checked": false
     }]
 },{
-	"id" : "2",
+	"id" : "p2",
     "text": "토양",
     "cls": "folder",
     "expanded": true,
     "checked": false,
     "children": [{
-		"id" : "21",
+		"id" : "8",
         "text": "토양측정망",
         "leaf": true,
         "checked": false
     },{
-		"id" : "22",
+		"id" : "9",
         "text": "골프장",
         "leaf": true,
         "checked": false
     },{
-		"id" : "23",
+		"id" : "10",
         "text": "토양실태조사",
+        "leaf": true,
+        "checked": false
+    },{
+		"id" : "11",
+        "text": "가축매몰지",
         "leaf": true,
         "checked": false
     }]
 },{
-	"id" : "3",
-    "text": "수문지질도", 
+	"id" : "p3",
+    "text": "토양측정", 
     "cls": "folder",
     "expanded": true,
     "checked": false,
     "children": [{
-		"id" : "31",
-        "text": "지질단면선",
+		"id" : "13",
+        "text": "하천수질시료지점",
         "leaf": true,
         "checked": false
     },{
-		"id" : "32",
-        "text": "수문지질경계",
+		"id" : "14",
+        "text": "하천퇴적물시료지점",
         "leaf": true,
         "checked": false
     },{
-		"id" : "33",
-        "text": "대수층",
+		"id" : "15",
+        "text": "토양시료",
         "leaf": true,
         "checked": false
     },{
-		"id" : "33",
-        "text": "지하수등수위선",
-        "leaf": true,
-        "checked": false
-    },{
-		"id" : "34",
-        "text": "지하수유동체계규모",
-        "leaf": true,
-        "checked": false
-    },{
-		"id" : "34",
-        "text": "유역경계",
-        "leaf": true,
-        "checked": false
-    }]
-}, {
-	"id" : "4",
-    "text": "지하수오염 취약성도", 
-    "cls": "folder",
-    "expanded": true,
-    "checked": false,
-    "children": [{
-		"id" : "41",
-        "text": "토양도",
-        "leaf": true,
-        "checked": false
-    },{
-		"id" : "42",
-        "text": "잠재오염원",
-        "leaf": true,
-        "checked": false
-    },{
-		"id" : "43",
-        "text": "오염취약성",
-        "leaf": true,
-        "checked": false
-    }]
-}, {
-	"id" : "5",
-    "text": "토양특성", 
-    "cls": "folder",
-    "expanded": true,
-    "checked": false,
-    "children": [{
-		"id" : "51",
-        "text": "배수등급",
-        "leaf": true,
-        "checked": false
-    },{
-		"id" : "52",
-        "text": "표토의참식등급",
-        "leaf": true,
-        "checked": false
-    },{
-		"id" : "53",
-        "text": "경사",
-        "leaf": true,
-        "checked": false
-    },{
-		"id" : "53",
-        "text": "심토의 자갈함량",
-        "leaf": true,
-        "checked": false
-    },{
-		"id" : "54",
-        "text": "심토의 토성",
-        "leaf": true,
-        "checked": false
-    },{
-		"id" : "55",
-        "text": "산림입지토양도",
-        "leaf": true,
-        "checked": false
-    }]
-}, {
-	"id" : "6",
-    "text": "배경도", 
-    "cls": "folder",
-    "expanded": true,
-    "checked": false,
-    "children": [{
-		"id" : "61",
-        "text": "행정경계도",
-        "leaf": true,
-        "checked": false
-    },{
-		"id" : "62",
-        "text": "음영기복도",
+		"id" : "16",
+        "text": "폐광산",
         "leaf": true,
         "checked": false
     }]

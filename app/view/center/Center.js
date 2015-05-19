@@ -9,9 +9,11 @@ Ext.define('Sgis.view.center.Center', {
 	
 	xtype: 'app-default-center',
 	
+	controller: 'default-center',
+	
 	items: [{
 			xtype: 'app-map-coreMap',
-			width: '100',
+			width: '100%',
 			height: '100%'
 		}
 	]
