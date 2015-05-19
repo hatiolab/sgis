@@ -75,9 +75,10 @@ Ext.define('Cmm.mixin.Menu', function() {
 		if(!current) {
 			current = Ext.create(view, config);
 			south.add(current);
-			south.getLayout().setActiveItem(current);
-			south.expand();
 		}
+		
+		south.getLayout().setActiveItem(current);
+		south.expand();
 
 		if (current.setParams) {
 			current.setParams(params || current.getParams());
@@ -100,7 +101,11 @@ Ext.define('Cmm.mixin.Menu', function() {
 		
 		if(current) {
 			south.remove(current);
-		}		
+			
+			if(south.getLayout().getLayoutItems().length == 0) {
+				south.collapse();
+			}
+		}
 	}
 
 	return {
