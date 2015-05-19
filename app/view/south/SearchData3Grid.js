@@ -143,10 +143,10 @@ Ext.define('Sgis.view.south.SearchData3Grid', {
 			var pageSize = toolbar.down('#btnCountPerPage').getText();
 			pageSize = parseInt(pageSize);
 			store.setPageSize(pageSize);
-			store.getProxy().setExtraParams({
-				year : toolbar.down('#btnYear').getText(),
-				quarter : toolbar.down('#btnQuarter').getText()			
-			});
+			var extraParams = store.getProxy().getExtraParams() || {};
+			extraParams.year = toolbar.down('#btnYear').getText();
+			extraParams.quarter = toolbar.down('#btnQuarter').getText();
+			store.getProxy().setExtraParams(extraParams);
 		}, this);
 	}
 });
