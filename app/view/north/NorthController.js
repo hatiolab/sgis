@@ -4,7 +4,7 @@
 Ext.define('Sgis.view.north.NorthController', {
 	extend: 'Ext.app.ViewController',
 
-	alias: 'controller.default-north',
+	alias: 'controller.app-north',
 
 	control: {
 		'#mapmode': {

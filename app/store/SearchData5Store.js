@@ -1,4 +1,4 @@
-Ext.define('Sgis.store.SearchData1Store', {
+Ext.define('Sgis.store.SearchData5Store', {
 	
 	extend: 'Ext.data.Store',
 		
@@ -12,7 +12,7 @@ Ext.define('Sgis.store.SearchData1Store', {
 
 	proxy: {
 		type: 'rest',
-		url: '/resources/data/south/search-data1.json',
+		url: '/resources/data/south/search-data5.json',
 		reader: {
 			type : 'json',
 			rootProperty : 'items',

@@ -1,19 +1,19 @@
-Ext.define('Sgis.view.south.SearchData1Grid', {
+Ext.define('Sgis.view.south.SearchData2Grid', {
 
 	extend : 'Ext.grid.Panel',
 	
 	requires: [
-		'Sgis.store.SearchData1Store',
-		'Sgis.view.south.SearchData1GridController'
+		'Sgis.store.SearchData2Store',
+		'Sgis.view.south.SearchData2GridController'
 	],
 	
-	xtype: 'search_data1_grid',
+	xtype: 'search_data2_grid',
 	
-	controller: 'search_data1_grid',
+	controller: 'search_data2_grid',
 
-	title: '지하수오염원감지',
+	title: '지하수 일반지역',
 	
-	store : Ext.create('Sgis.store.SearchData1Store'),
+	store : Ext.create('Sgis.store.SearchData2Store'),
 
 	flex : 1,
 		

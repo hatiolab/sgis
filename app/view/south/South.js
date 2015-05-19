@@ -6,13 +6,13 @@ Ext.define('Sgis.view.south.South', {
 		'Sgis.view.south.SearchData1Grid'
 	],
 	
-	xtype: 'app-default-south',
+	xtype: 'app-south',
 	
 	layout: 'card',
 	
 	id: 'south',
 	
-	height: 250,
+	height: 350,
 	
 	plain: true,
 	
