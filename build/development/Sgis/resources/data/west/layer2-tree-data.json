@@ -1,0 +1,49 @@
+[{
+	"id" : "1",
+    "text": "지하수", 
+    "expanded": true,
+    "checked": false,
+    "children": [{
+		"id" : "11",
+        "text": "지하수오염 우려지역",
+        "leaf": true,
+        "checked": false
+    },{
+		"id" : "12",
+        "text": "지하수 일반지역",
+        "leaf": true,
+        "checked": false
+    },{
+		"id" : "13",
+        "text": "지하수 배경수질",
+        "leaf": true,
+        "checked": false
+    },{
+		"id" : "14",
+        "text": "지하수 오염원감시",
+        "leaf": true,
+        "checked": false
+    }]
+},{
+	"id" : "2",
+    "text": "토양",
+    "cls": "folder",
+    "expanded": true,
+    "checked": false,
+    "children": [{
+		"id" : "21",
+        "text": "토양측정망",
+        "leaf": true,
+        "checked": false
+    },{
+		"id" : "22",
+        "text": "골프장",
+        "leaf": true,
+        "checked": false
+    },{
+		"id" : "23",
+        "text": "토양실태조사",
+        "leaf": true,
+        "checked": false
+    }]
+}]
