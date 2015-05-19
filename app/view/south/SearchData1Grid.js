@@ -11,7 +11,7 @@ Ext.define('Sgis.view.south.SearchData1Grid', {
 	
 	controller: 'search_data1_grid',
 
-	title: '지하수오염원감지',
+	title: '지하수오염 우려지역',
 	
 	store : Ext.create('Sgis.store.SearchData1Store'),
 
