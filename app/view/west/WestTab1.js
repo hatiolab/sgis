@@ -25,7 +25,7 @@ Ext.define('Sgis.view.west.WestTab1', {
 		rootVisible: false,
 		useArrows: true,
 		//frame: true,
-		rowLines: true,
+		//rowLines: true,
 		bufferedRenderer: false,
 		store : Ext.create('Sgis.store.LayerTreeStore')
 	}]
