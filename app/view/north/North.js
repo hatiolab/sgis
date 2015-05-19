@@ -29,7 +29,7 @@ Ext.define('Sgis.view.north.North', {
 	}, {
 		xtype: 'container',
 		width: 350,
-		html: "<h2 align='center'>SGIS 토양지하수 정보시스템</h2>"
+		//html: "<h2 align='center'>SGIS 토양지하수 정보시스템</h2>"
 	}, {
 		xtype: 'container',
 		flex: 1,

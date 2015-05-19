@@ -37,7 +37,8 @@ Ext.define('Sgis.Application', {
 	
 	//manifest때문에 적어놈.
 	eventType:[
-	    'dynamicLayerOnOff'
+	    'dynamicLayerOnOff',
+	    'searchLayerOnOff'
 	],
 
 	launch: function () {

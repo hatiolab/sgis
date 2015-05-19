@@ -9,6 +9,6 @@ Ext.define('Sgis.view.main.MainModel', {
     data: {
         name: 'SID Portal',
 		app_title: '토양지하수 정보시스템',
-		brand_image: './resources/images/site_brand.png'
+		brand_image: './resources/images/logo.png'
     }
 });

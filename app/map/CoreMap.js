@@ -6,7 +6,8 @@ Ext.define('Sgis.map.CoreMap', {
 	html: "<div id='_mapDiv_' style='height:100%; width:100%;background-color: #ffffff;'></div>",
 	
 	requires: [
-	           'Sgis.map.DynamicLayerAdmin'
+	    'Sgis.map.DynamicLayerAdmin',
+	    'Sgis.map.SearchLayerAdmin'
 	],
 	
 	map:null,
@@ -19,21 +20,42 @@ Ext.define('Sgis.map.CoreMap', {
 	
 	mapRendered: function(p){
         var me = this;
-        var timerId = window.setInterval(function(){
-        	me.map = new esri.Map('_mapDiv_', {
-    	     	isDoubleClickZoom:false,
-    	     	isPan:true,
-    	 		logo:false,
-    	 		slider: true,
-    	 		autoResize: true
-    		});
-            
-        	me.map.resize();
-        	me.baseMapInit();
-        	me.map.setLevel(1+6);
-        	window.clearInterval(timerId);
-        	me.dynamicLayerAdmin = Ext.create('Sgis.map.DynamicLayerAdmin', me.map);
-		}, 1);
+        
+        require(["dojo/dom",
+  		         "dojo/dom-attr",
+  		         "dojo/_base/array",
+  		         "esri/Color",
+  		         "dojo/number",
+  		         "dojo/parser",
+  		         "dijit/registry",
+  		         "esri/config",
+  		         "esri/map",
+  		         "esri/graphic",
+  		         "esri/tasks/GeometryService",
+  		         "esri/tasks/BufferParameters",
+  		         "esri/toolbars/draw",
+  		         "esri/symbols/SimpleMarkerSymbol",
+  		         "esri/symbols/SimpleLineSymbol",
+  		         "esri/symbols/SimpleFillSymbol",
+  		         "esri/symbols/Font",
+  		         "esri/symbols/TextSymbol",
+
+  		         "dijit/layout/BorderContainer",
+  		         "dijit/layout/ContentPane"],  
+  		         function() {
+		        	me.map = new esri.Map('_mapDiv_', {
+		        		isDoubleClickZoom:false,
+		    	     	isPan:true,
+		    	 		logo:false,
+		    	 		slider: true,
+		    	 		autoResize: true
+		        	});
+		        	me.baseMapInit();
+		        	me.map.setLevel(1+6);
+		        	me.dynamicLayerAdmin = Ext.create('Sgis.map.DynamicLayerAdmin', me.map);
+		        	me.searchLayerAdmin = Ext.create('Sgis.map.SearchLayerAdmin', me.map);
+      		        	    
+        });
     },
     
     baseMapInit: function(){

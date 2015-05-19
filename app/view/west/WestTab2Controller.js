@@ -57,17 +57,20 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 	onCheckChanged: function(node, checked, eOpts) {
 		if(!node.get('leaf')) {
 			this.checkAllChildren(node, checked);
-		} else {
-			this.layerSearchData(node, checked);
+		}else{
+			Sgis.getApplication().fireEvent('searchLayerOnOff', this.getView().getChecked());
 		}
 	},
 	
-	checkAllChildren: function(node, checked) {
+	checkAllChildren: function(node, checked) {		
+		var me = this;
 		var children = node.childNodes;
-		var self = this;
-		Ext.each(children, function(child) {
+		Ext.each(children, function(child, index) {
 			child.set('checked', checked);
-			self.layerSearchData(node, checked);
+			me.layerSearchData(node, checked);
+			if(index==children.length-1){
+				Sgis.getApplication().fireEvent('searchLayerOnOff', me.getView().getChecked());
+			}
 		});
 	},
 	

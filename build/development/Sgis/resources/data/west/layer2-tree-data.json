@@ -1,49 +1,119 @@
 [{
-	"id" : "1",
+	"id" : "p1",
     "text": "지하수", 
     "expanded": true,
     "checked": false,
     "children": [{
-		"id" : "11",
+		"id" : "1",
+		"layerId" : "1",
         "text": "지하수오염 우려지역",
         "leaf": true,
-        "checked": false
+        "checked": false,
+        "iconCls": "layer1",
     },{
-		"id" : "12",
+		"id" : "2",
+		"layerId" : "2",
         "text": "지하수 일반지역",
         "leaf": true,
-        "checked": false
+        "checked": false,
+        "iconCls": "layer2",
     },{
-		"id" : "13",
+		"id" : "3",
+		"layerId" : "3",
         "text": "지하수 배경수질",
         "leaf": true,
-        "checked": false
+        "checked": false,
+        "iconCls": "layer3",
     },{
-		"id" : "14",
-        "text": "지하수 오염원감시",
+		"id" : "4",
+		"layerId" : "4",
+        "text": "지하수오염원감지",
         "leaf": true,
-        "checked": false
+        "checked": false,
+        "iconCls": "layer4",
+    },{
+		"id" : "5",
+		"layerId" : "5",
+        "text": "지하수관정정보",
+        "leaf": true,
+        "checked": false,
+        "iconCls": "layer5",
+    },{
+		"id" : "6",
+		"layerId" : "6",
+        "text": "자연방사선실태조사",
+        "leaf": true,
+        "checked": false,
+        "iconCls": "layer6",
     }]
 },{
-	"id" : "2",
+	"id" : "p2",
     "text": "토양",
     "cls": "folder",
     "expanded": true,
     "checked": false,
     "children": [{
-		"id" : "21",
+		"id" : "8",
+		"layerId" : "8",
         "text": "토양측정망",
         "leaf": true,
-        "checked": false
+        "checked": false,
+        "iconCls": "layer8",
     },{
-		"id" : "22",
+		"id" : "9",
+		"layerId" : "9",
         "text": "골프장",
         "leaf": true,
-        "checked": false
+        "checked": false,
+        "iconCls": "layer9",
     },{
-		"id" : "23",
+		"id" : "10",
+		"layerId" : "10",
         "text": "토양실태조사",
         "leaf": true,
-        "checked": false
+        "checked": false,
+        "iconCls": "layer10",
+    },{
+		"id" : "11",
+		"layerId" : "11",
+        "text": "가축매몰지",
+        "leaf": true,
+        "checked": false,
+        "iconCls": "layer11",
+    }]
+},{
+	"id" : "p3",
+    "text": "토양환경지도", 
+    "cls": "folder",
+    "expanded": true,
+    "checked": false,
+    "children": [{
+		"id" : "13",
+		"layerId" : "13",
+        "text": "하천수질시료지점",
+        "leaf": true,
+        "checked": false,
+        "iconCls": "layer13",
+    },{
+		"id" : "14",
+		"layerId" : "14",
+        "text": "하천퇴적물시료지점",
+        "leaf": true,
+        "checked": false,
+        "iconCls": "layer14",
+    },{
+		"id" : "15",
+		"layerId" : "15",
+        "text": "토양시료",
+        "leaf": true,
+        "checked": false,
+        "iconCls": "layer15",
+    },{
+		"id" : "16",
+		"layerId" : "16",
+        "text": "폐광산",
+        "leaf": true,
+        "checked": false,
+        "iconCls": "layer16",
     }]
 }]

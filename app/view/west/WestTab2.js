@@ -93,12 +93,12 @@ Ext.define('Sgis.view.west.WestTab2', {
 			}]
 		}, {
 			title: '레이어',
-			hideCollapseTool: true,
+			//hideCollapseTool: true,
 			xtype: 'treepanel',
 			controller: 'default-west-tab2',
 			rootVisible: false,
 			useArrows: true,
-			rowLines: true,
+			//rowLines: true,
 			bufferedRenderer: false,
 			store : Ext.create('Sgis.store.Layer2TreeStore')
 		}]
