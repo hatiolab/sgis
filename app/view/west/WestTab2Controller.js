@@ -25,7 +25,6 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 	constructor: function(map) {
 		var me = this;
 		me.callParent();
-		console.log("xxx")
 		Sgis.getApplication().addListener('drawComplte', me.drawComplteHandler, me);
     },
 	

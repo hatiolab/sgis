@@ -13,6 +13,16 @@ Ext.define('Sgis.view.south.SearchData1GridController', {
 		}
 	},
 	
+	constructor: function(map) {
+		var me = this;
+		me.callParent();
+		Sgis.getApplication().addListener('searchComplte', me.searchComplteHandler, me);
+    },
+    
+    searchComplteHandler:function(results){
+    	console.log(results)
+    },
+	
 	reloadGrid: function() {
 		this.getView().getStore().load();
 	}

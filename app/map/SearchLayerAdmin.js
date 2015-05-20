@@ -140,6 +140,8 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 			return;
 		}
 		
+		var exeComplteCnt = 0;
+		var complteData = [];
 		Ext.each(me.layers, function(layerInfo, index) {
 			if(layerInfo){
 				var layer = layerInfo.data
@@ -156,7 +158,8 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 				resultData.filterCallback = me.spSearch;
 				resultData.filterCallbackScope = me;
 				
-				resultData.layer = layer.layerId;
+				resultData.layerId = layer.layerId;
+				resultData.text = layer.text;
 				resultData.datas = datas;
 				resultData.clickCallback = me.highlightGraphic;
 				resultData.clickCallbackScope = me;
@@ -172,6 +175,11 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 				query.outFields = ["*"];
 				queryTask.execute(query,  function(results){
 					if(results.features.length==0){
+						exeComplteCnt++;
+						complteData.push(resultData);
+						if(exeComplteCnt==me.layers.length){
+							Sgis.getApplication().fireEvent('searchComplte', complteData);
+						}
 					}
 					else
 					{
@@ -187,6 +195,13 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 				    		datas.push(obj.attributes);
 				    		obj.attributes._layerName_ = layer.text;
 				    		obj.attributes._layerId_ = layer.layerId;
+				    		if(results.features.length==index+1){
+				    			exeComplteCnt++;
+				    			complteData.push(resultData);
+								if(exeComplteCnt==me.layers.length){
+									Sgis.getApplication().fireEvent('searchComplte', complteData);
+								}
+				    		}
 						});
 					}
 					

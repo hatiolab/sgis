@@ -40,7 +40,8 @@ Ext.define('Sgis.Application', {
 	    'dynamicLayerOnOff',
 	    'searchLayerOnOff',
 	    'searchBtnClick',
-	    'drawComplte'
+	    'drawComplte',
+	    'searchComplte'
 	],
 
 	launch: function () {
