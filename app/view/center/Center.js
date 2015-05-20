@@ -3,19 +3,19 @@ Ext.define('Sgis.view.center.Center', {
 	extend: 'Ext.container.Container',
 	
 	requires: [
-	   	'Sgis.view.center.CenterController',
-	   	'Sgis.map.CoreMap'
+		'Sgis.view.center.Content'
 	],
 	
-	xtype: 'app-default-center',
+	layout: 'border',
 	
-	controller: 'default-center',
+	xtype: 'app-center',
 	
 	items: [{
-			xtype: 'app-map-coreMap',
-			width: '100%',
-			height: '100%'
-		}
-	]
-	
+		xtype: 'app-content',
+		region: 'center'
+	}, {
+		xtype: 'app-south',
+		region: 'south',
+		width: 350
+	}]
 });

@@ -4,9 +4,9 @@ Ext.define('Sgis.view.north.North', {
 	
 	requires: ['Sgis.view.north.NorthController'],
 	
-	xtype: 'app-default-north',
+	xtype: 'app-north',
 	
-	controller: 'default-north',
+	controller: 'app-north',
 	
 	padding: 10,
 	
@@ -21,15 +21,14 @@ Ext.define('Sgis.view.north.North', {
 	
 	items: [{
 		xtype: 'image',
-		width: 180,
+		width: 300,
 		padding: '5 10 5 10',
 		bind: {
 			src: '{brand_image}'
 		}
 	}, {
 		xtype: 'container',
-		width: 350,
-		//html: "<h2 align='center'>SGIS 토양지하수 정보시스템</h2>"
+		width: 200
 	}, {
 		xtype: 'container',
 		flex: 1,

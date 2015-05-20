@@ -46,24 +46,12 @@ Ext.define('Sgis.Application', {
 		
 		main.add({
 			region: 'north',
-			xtype : 'app-default-north'
+			xtype : 'app-north'
 		});
 		
 		main.add({
 			region: 'west',
-			xtype : 'app-default-west'
+			xtype : 'app-west'
 		});
-		
-		/*main.add({
-			region: 'east',
-			xtype : 'app-default-east'
-		});*/
-		
-		main.add({
-			region: 'south',
-			xtype : 'app-default-south'
-		});
-		
-		SGIS.show('Sgis.view.center.Center');
 	}
 });

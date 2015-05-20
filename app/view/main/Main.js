@@ -27,10 +27,8 @@ Ext.define('Sgis.view.main.Main', {
 	},
 
 	items: [{
-		xtype: 'container',
-		id: 'content',
 		region: 'center',
-		layout: 'card'
+		xtype: 'app-center'
 	}]
 	
 });

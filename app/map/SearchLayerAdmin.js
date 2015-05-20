@@ -31,7 +31,7 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 		Sgis.getApplication().addListener('searchLayerOnOff', me.searchLayerOnOfffHandler, me);
     },
     
-    searchLayerOnOfffHandler:function(){
+    searchLayerOnOfffHandler:function(selectInfo){
     	var me = this;
     	me.layers = [];
     	me.layers2 = [];

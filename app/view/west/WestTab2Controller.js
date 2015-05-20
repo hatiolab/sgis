@@ -5,7 +5,7 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 	
 	extend: 'Ext.app.ViewController',
 	
-	alias: 'controller.default-west-tab2',
+	alias: 'controller.app-west-tab2',
 	
 	control: {
 		'#cmbArea1': {
@@ -57,29 +57,43 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 	onCheckChanged: function(node, checked, eOpts) {
 		if(!node.get('leaf')) {
 			this.checkAllChildren(node, checked);
-		}else{
-			Sgis.getApplication().fireEvent('searchLayerOnOff', this.getView().getChecked());
+		} else {
+			var view = this.getView();
+			if(view.xtype == 'treepanel') {
+				Sgis.getApplication().fireEvent('searchLayerOnOff', view.getChecked());
+				this.layerSearchData(node, checked);
+			}
 		}
 	},
 	
 	checkAllChildren: function(node, checked) {		
 		var me = this;
 		var children = node.childNodes;
+		
 		Ext.each(children, function(child, index) {
 			child.set('checked', checked);
-			me.layerSearchData(node, checked);
-			if(index==children.length-1){
-				Sgis.getApplication().fireEvent('searchLayerOnOff', me.getView().getChecked());
+			me.layerSearchData(child, checked);
+			
+			if(index == children.length - 1) {
+				var view = me.getView();
+				if(view.xtype == 'treepanel') {
+					Sgis.getApplication().fireEvent('searchLayerOnOff', view.getChecked());
+				}
 			}
 		});
 	},
 	
 	layerSearchData: function(node, checked) {
-		if(checked) {
-			SGIS.addSearchGrid('Sgis.view.south.SearchData1Grid', {title : node.get('text')});
-			
-		} else {
-			SGIS.removeSearchGrid('Sgis.view.south.SearchData1Grid');
+		var nodeId = node.get('id');
+		nodeId = parseInt(nodeId);
+		
+		if(!isNaN(nodeId)) {
+			var viewName = 'Sgis.view.south.SearchData' + nodeId + 'Grid';
+			if(checked) {
+				SGIS.addSearchGrid(viewName, {title : node.get('text')});
+			} else {
+				SGIS.removeSearchGrid(viewName);
+			}
 		}
 	}
 });

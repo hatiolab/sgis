@@ -6,7 +6,7 @@ Ext.define('Sgis.view.west.WestTab1', {
 		'Sgis.view.west.WestTab1Controller'
 	],
 	
-	xtype: 'app-default-west-tab1',
+	xtype: 'app-west-tab1',
 
 	title: '레이어',
 
@@ -21,11 +21,9 @@ Ext.define('Sgis.view.west.WestTab1', {
 	
 	items: [{
 		xtype: 'treepanel',
-		controller: 'default-west-tab1',
+		controller: 'app-west-tab1',
 		rootVisible: false,
 		useArrows: true,
-		//frame: true,
-		//rowLines: true,
 		bufferedRenderer: false,
 		store : Ext.create('Sgis.store.LayerTreeStore')
 	}]

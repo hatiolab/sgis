@@ -10,7 +10,7 @@ Ext.define('Sgis.view.west.WestController', {
 		'Sgis.view.west.ScaleInfoPopupGrid'
 	],
 
-	alias: 'controller.default-west',
+	alias: 'controller.app-west',
 
 	onClickWestLayer: function() {
 		SGIS.popup('Sgis.view.west.LayerInfoPopupGrid');

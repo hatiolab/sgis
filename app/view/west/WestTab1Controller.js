@@ -5,7 +5,7 @@ Ext.define('Sgis.view.west.WestTab1Controller', {
 	
 	extend: 'Ext.app.ViewController',
 
-	alias: 'controller.default-west-tab1',
+	alias: 'controller.app-west-tab1',
 
 	control: {
 		'treepanel': {
@@ -14,7 +14,6 @@ Ext.define('Sgis.view.west.WestTab1Controller', {
 	},
 	
 	onCheckChanged: function(node, checked, eOpts) {
-//		SGIS.msg.alert('Selected id : ' + node.get('id') + ', text : ' + node.get('text') + ', Checked : ' + checked);
 		if(!node.get('leaf')) {
 			this.checkAllChildren(node, checked);
 		}else{

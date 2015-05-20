@@ -8,9 +8,9 @@ Ext.define('Sgis.view.west.West', {
 		'Sgis.view.west.WestTab2'
 	],
 
-	xtype: 'app-default-west',
+	xtype: 'app-west',
 	
-	controller: 'default-west',
+	controller: 'app-west',
 	
 	title: 'Measures',
 	
@@ -19,9 +19,9 @@ Ext.define('Sgis.view.west.West', {
 	collapsible: true,
 	
 	items: [{
-		xtype: 'app-default-west-tab1'
+		xtype: 'app-west-tab1'
 	}, {
-		xtype: 'app-default-west-tab2'
+		xtype: 'app-west-tab2'
 	}],
 	
 	bbar: [{

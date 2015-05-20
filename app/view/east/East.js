@@ -2,7 +2,7 @@ Ext.define('Sgis.view.east.East', {
 	
 	extend: 'Ext.panel.Panel',
 	
-	xtype: 'app-default-east',
+	xtype: 'app-east',
 	
 	width: 100,
 	
