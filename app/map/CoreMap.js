@@ -37,11 +37,13 @@ Ext.define('Sgis.map.CoreMap', {
   		         "esri/symbols/SimpleMarkerSymbol",
   		         "esri/symbols/SimpleLineSymbol",
   		         "esri/symbols/SimpleFillSymbol",
+  		         "esri/symbols/PictureMarkerSymbol",
   		         "esri/symbols/Font",
   		         "esri/symbols/TextSymbol",
 
   		         "dijit/layout/BorderContainer",
-  		         "dijit/layout/ContentPane"],  
+  		         "dijit/layout/ContentPane",
+  		         "dojox/uuid/generateRandomUuid"],  
   		         function() {
 		        	me.map = new esri.Map('_mapDiv_', {
 		        		isDoubleClickZoom:false,

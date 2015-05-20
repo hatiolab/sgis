@@ -32,14 +32,16 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 	constructor: function(map) {
 		var me = this;
 		me.map = map;
-		me.toolbar = new esri.toolbars.Draw(me.map, {showTooltips:false});
-		dojo.connect(me.toolbar, "onDrawEnd", function(evt){
-			me.map.setMapCursor("default");
-			me.addToMap(evt);
-		});
+		me.customDefine();
 		me.sourceGraphicLayer = new esri.layers.GraphicsLayer();
 		me.sourceGraphicLayer.id="sourceGraphic";
 		me.map.addLayer(me.sourceGraphicLayer);
+		dojo.connect(me.sourceGraphicLayer, "onClick", function(event){
+        	if(event.graphic.img && event.graphic.img =='btn_close' && event.graphic.geometry.uuid){
+        		me.sourceGraphicLayer.clear();
+        	}
+		});
+		
 		me.targetGraphicLayer = new esri.layers.GraphicsLayer();
 		me.targetGraphicLayer.id="targetGraphic";
 		me.map.addLayer(me.targetGraphicLayer);
@@ -48,31 +50,52 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 		me.highlightGraphicLayer.id="highlightGraphic";
 		me.map.addLayer(me.highlightGraphicLayer);
 		
+		me.toolbar = new ash.map.toolbars.CustomDraw(me.map, {showTooltips:false}, true, me.sourceGraphicLayer);
+		dojo.connect(me.toolbar, "onDrawEnd", function(event){
+			me.map.setMapCursor("default");
+			me.addToMap(event);
+		});
+		
 		me.getLayerDisplayFiledInfo();
 		
 		Sgis.getApplication().addListener('searchLayerOnOff', me.searchLayerOnOfffHandler, me);
 		Sgis.getApplication().addListener('searchBtnClick', me.searchBtnClickfHandler, me);
     },
     
-    addToMap:function(evt){
+    addToMap:function(event){
 		var me = this;
 		var symbol;
         me.toolbar.deactivate();
         symbol = new esri.symbol.SimpleFillSymbol();
         
-        if(evt.type=='extent'){
-        	me.geometry = new esri.geometry.Extent(evt);
-        }else if(evt.type=='point'){
+        if(event.type=='extent'){
+        	me.geometry = new esri.geometry.Extent(event);
+        }else if(event.type=='point'){
         	symbol = new esri.symbol.SimpleMarkerSymbol();
-        	me.geometry = new esri.geometry.Point(evt);
+        	me.geometry = new esri.geometry.Point(event);
         	me.bufferDisplayAndXY();
-        }else if(evt.type=='polygon'){
-        	me.geometry = new esri.geometry.Polygon(evt);
+        }else if(event.type=='polygon'){
+        	me.geometry = new esri.geometry.Polygon(event);
         }
         
         var graphic = new esri.Graphic(me.geometry, symbol);
         me.sourceGraphicLayer.clear();
         me.sourceGraphicLayer.add(graphic);
+        
+        var symbol = new esri.symbol.PictureMarkerSymbol('resources/images/btn_close.png' , 16, 16);
+        var point
+        if(event.type=='polygon'){
+        	var finalRing = event.rings[0][event.rings[0].length-1];
+    		point = new esri.geometry.Point(finalRing[0], finalRing[1], new esri.SpatialReference({"wkid":102100}));
+        }else{
+        	
+    		point = new esri.geometry.Point(event.xmax, event.ymax, new esri.SpatialReference({"wkid":102100}));
+        }
+		point.uuid = dojo.dojox.uuid.generateRandomUuid();
+		var graphic = new esri.Graphic(point, symbol);
+		graphic.img = 'btn_close'; 
+		me.sourceGraphicLayer.add(graphic);
+        
         Sgis.getApplication().fireEvent('drawComplte', null);
         me.spSearch();
 	},
@@ -210,6 +233,148 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 					alert("spSearch : " + err);
 				});
 			}
+		});
+	},
+	
+	customDefine:function(){
+		dojo.declare("ash.map.toolbars.CustomDraw", esri.toolbars.Draw, {
+			drawMode:false,
+			closeBtn:false,
+			closeEvent:false,
+			removeGraphicEvent:false,
+			smpLineSymbol:null,
+			simpleFillSymbol:null,
+			smpLineSymbol2:null,
+			simpleFillSymbol2:null,
+			
+			constructor: function(a, b, closeBtn, layer){
+				var me = this;
+				if(!layer){
+					layer = this.map.graphics;
+				}
+				if(closeBtn){
+					this.closeBtn = closeBtn;
+				}
+				me.smpLineSymbol = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_NULL, new dojo.Color([20,20,20,1]), 2);
+				me.simpleFillSymbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_NULL, me.smpLineSymbol, "#00ff00");
+				me.smpLineSymbol2 = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0,0,255,0.8]), 2);
+				me.simpleFillSymbol2 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, me.smpLineSymbol2, new dojo.Color([0,0,255,0.1]));
+			},
+			
+			activate: function(a) {
+				var me = this;
+				this.inherited(arguments);	
+				this.drawMode = true;
+				if(!me.closeEvent){
+					me.closeEvent = dojo.connect(this.map.graphics, "onClick", function(event){
+			        	if(me.closeBtn && !this.drawMode && event.graphic.geometry.type=='point' && event.graphic.geometry.uuid){
+			        		var removeGraphics = [];
+			        		for(var i=0; i<this.graphics.length; i++){
+			        			var graphic = this.graphics[i];
+			        			if(graphic.geometry && event.graphic.geometry.uuid == graphic.geometry.uuid){
+			        				removeGraphics.push(graphic);
+			        			}
+			        		}
+			        		for(var i=0; i<removeGraphics.length; i++){
+			        			this.remove(removeGraphics[i]);
+			        		}
+			        	}
+					});
+				}
+				if(me.removeGraphicEvent){
+					dojo.disconnect(me.removeGraphicEvent);
+				}
+			},
+			
+			deactivate:function(){
+				var me = this;
+				this.inherited(arguments);	
+				this.drawMode = false;
+				me.removeGraphicEvent = dojo.connect(this.map.graphics, "onGraphicRemove", function(event){
+		        	var removeGraphics = [];
+		    		for(var i=0; i<this.graphics.length; i++){
+		    			var graphic = this.graphics[i];
+		    			if(graphic.geometry && event.geometry.uuid == graphic.geometry.uuid){
+		    				removeGraphics.push(graphic);
+		    			}
+		    		}
+		    		for(var i=0; i<removeGraphics.length; i++){
+		    			this.remove(removeGraphics[i]);
+		    		}
+				});
+			},
+			
+			_onMouseMoveHandler: function(a) {
+				this.inherited(arguments);	
+				var me = this;
+		        if(this._geometryType == "polygon") {
+		            this._graphic.setSymbol(me.simpleFillSymbol);
+		            var one = this._points[0];
+		            
+		            for(var i=0; i<this.map.graphics.graphics.length; i++){
+		    			var graphic = this.map.graphics.graphics[i];
+		    			if(graphic.attributes && graphic.attributes.id && graphic.attributes.id=="fucker"){
+		    				this.map.graphics.remove(graphic);
+		    				break;
+		    			}
+		    		}
+
+		            var fPolygon = new esri.geometry.Polygon(this._graphic.geometry.toJson()); //this._graphic.geometry.toJson();
+		            fPolygon.insertPoint(0, this._points.length, a.mapPoint);
+		            var fuckGraphic = new esri.Graphic(fPolygon, me.simpleFillSymbol2);
+		            fuckGraphic.attributes = {id:"fucker"};
+		    		this.map.graphics.add(fuckGraphic);
+		    	}
+		    },
+		    
+		    _onClickHandler: function(a) {
+		    	this.inherited(arguments);
+		    	if(this._geometryType == "polygon") {
+		    		for(var i=0; i<this.map.graphics.graphics.length; i++){
+		     			var graphic = this.map.graphics.graphics[i];
+		     			if(graphic.attributes && graphic.attributes.id && graphic.attributes.id=="fucker"){
+		     				this.map.graphics.remove(graphic);
+		     				break;
+		     			}
+		     		}
+		    	}
+		    },
+		    
+		    _drawEnd: function(geo) {
+		    	var uuid = dojo.dojox.uuid.generateRandomUuid();
+		    	geo.uuid = uuid;
+		    	this.inherited(arguments);	
+		    	for(var i=0; i<this.map.graphics.graphics.length; i++){
+		 			var graphic = this.map.graphics.graphics[i];
+		 			if(graphic.attributes && graphic.attributes.id && graphic.attributes.id=="fucker"){
+		 				this.map.graphics.remove(graphic);
+		 				break;
+		 			}
+		 		}
+		    	/*
+		    	if(this.closeBtn && geo.type == "polygon") {
+		    		geo.uuid = uuid;
+		    		
+		    		var closeBool = false;
+		    		for(var i=0; i<this.map.graphics.graphics.length; i++){
+		    			var geometry = this.map.graphics.graphics[i].geometry;
+		    			if(uuid == geometry.uuid){
+		    				closeBool = true;
+		    			}
+		    		}
+		        	
+		    		if(closeBool){
+		    			var imageUrl = 'resources/images/btn_close.png';
+		        		var symbol = new esri.symbol.PictureMarkerSymbol(imageUrl , 16, 16);
+		            	var finalRing = geo.rings[0][geo.rings[0].length-1];
+		        		var point = new esri.geometry.Point(finalRing[0], finalRing[1], new esri.SpatialReference(_etcConfig.spatialReferenceInfo));
+		        		point.uuid = uuid;
+		        		var graphic = new esri.Graphic(point, symbol);
+		        		layer.add(graphic);
+		    		}
+		    	}
+		    	*/
+		    }
 		});
 	}
 });
