@@ -22,6 +22,13 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 		}		
 	},
 	
+	constructor: function(map) {
+		var me = this;
+		me.callParent();
+		console.log("xxx")
+		Sgis.getApplication().addListener('drawComplte', me.drawComplteHandler, me);
+    },
+	
 	onArea1Change: function(combo, newValue, oldValue, eOpts) {
 		SGIS.msg.alert(newValue + ' Selected!');
 	},
@@ -34,31 +41,34 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 		SGIS.msg.alert(newValue + ' Selected!');
 	},
 
-	onAreaCircleClick: function() {
-		SGIS.msg.alert('원형 Clicked!');
+	onAreaCircleClick: function(button, e) {
+		Sgis.getApplication().fireEvent('searchBtnClick', {drawType:'CIRCLE', state:button.pressed});
 	},
 	
-	onAreaRectClick: function() {
-		SGIS.msg.alert('사각형 Clicked!');
+	onAreaRectClick: function(button, e) {
+		Sgis.getApplication().fireEvent('searchBtnClick', {drawType:'EXTENT', state:button.pressed});
 	},
 	
-	onAreaPolygonClick: function() {
-		SGIS.msg.alert('다각형 Clicked!');
+	onAreaPolygonClick: function(button, e) {
+		Sgis.getApplication().fireEvent('searchBtnClick', {drawType:'POLYGON', state:button.pressed});
 	},
 	
-	onAreaRadiusClick: function() {
-		SGIS.msg.alert('반경 Clicked!');
+	onAreaRadiusClick: function(button, e) {
+		Sgis.getApplication().fireEvent('searchBtnClick', {drawType:'POINT', state:button.pressed});
 	},
 	
-	onAreaDeselectClick: function() {
-		SGIS.msg.alert('선택해제 Clicked!');
+	drawComplteHandler: function(){
+		var btnAr  = Ext.getCmp('btnHBox').items.items;
+		Ext.each(btnAr, function(btn, index) {
+			btn.setPressed(false);
+		});
 	},
 	
 	onCheckChanged: function(node, checked, eOpts) {
 		if(!node.get('leaf')) {
 			this.checkAllChildren(node, checked);
 		} else {
-			var view = this.getView();
+			var view = Ext.getCmp("layerTree2");
 			if(view.xtype == 'treepanel') {
 				Sgis.getApplication().fireEvent('searchLayerOnOff', view.getChecked());
 				this.layerSearchData(node, checked);
@@ -75,7 +85,7 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 			me.layerSearchData(child, checked);
 			
 			if(index == children.length - 1) {
-				var view = me.getView();
+				var view = Ext.getCmp("layerTree2");
 				if(view.xtype == 'treepanel') {
 					Sgis.getApplication().fireEvent('searchLayerOnOff', view.getChecked());
 				}

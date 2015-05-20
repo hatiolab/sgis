@@ -6,11 +6,13 @@ Ext.define('Sgis.view.west.WestTab2', {
 		'Sgis.view.west.WestTab2Controller'
 	],
 
-	xtype: 'app-default-west-tab2',
+	xtype: 'app-west-tab2',
 
-	controller: 'default-west-tab2',
+	controller: 'app-west-tab2',
 	
 	title: '자료검색',
+	
+	autoScroll: true,
 	
 	bodyPadding: 10,
 	
@@ -56,6 +58,7 @@ Ext.define('Sgis.view.west.WestTab2', {
 			}]
 		}, {
 			title: '영역검색',
+			id:'btnHBox',
 			layout: {
 				type: 'hbox',
 				align: 'stretch'
@@ -65,37 +68,41 @@ Ext.define('Sgis.view.west.WestTab2', {
 				xtype: 'button',
 				text: '원형',
 				flex: 1,
-				margin: '0 10 0 0',
-				handler: 'onAreaCircleClick'
+				margin: '0 4 0 0',
+				handler: 'onAreaCircleClick',
+				enableToggle: true,
+				toggleGroup: 'seachBtnGroup'
 			}, {
 				xtype: 'button',
 				text: '사각형',
 				flex: 1,
-				margin: '0 10 0 0',
-				handler: 'onAreaRectClick'
+				margin: '0 4 0 0',
+				handler: 'onAreaRectClick',
+				enableToggle: true,
+				toggleGroup: 'seachBtnGroup'
 			}, {
 				xtype: 'button',
 				text: '다각형',
 				flex: 1,
-				margin: '0 10 0 0',
-				handler: 'onAreaPolygonClick'
+				margin: '0 4 0 0',
+				handler: 'onAreaPolygonClick',
+				enableToggle: true,
+				toggleGroup: 'seachBtnGroup'
 			}, {
 				xtype: 'button',
 				text: '반경',
 				flex: 1,
-				margin: '0 10 0 0',
-				handler: 'onAreaRadiusClick'
-			}, {
-				xtype: 'button',
-				text: '선택해제',
-				flex: 1,
-				handler: 'onAreaDeselectClick'
+				margin: '0 4 0 0',
+				handler: 'onAreaRadiusClick',
+				enableToggle: true,
+				toggleGroup: 'seachBtnGroup'
 			}]
 		}, {
 			title: '레이어',
+			id:'layerTree2',
 			//hideCollapseTool: true,
 			xtype: 'treepanel',
-			controller: 'default-west-tab2',
+			//controller: 'app-west-tab2',
 			rootVisible: false,
 			useArrows: true,
 			//rowLines: true,

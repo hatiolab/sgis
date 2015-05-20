@@ -10,6 +10,7 @@
         "leaf": true,
         "checked": false,
         "iconCls": "layer1",
+        "iconInfo": "resources/images/layerIcon/Layer1.png"
     },{
 		"id" : "2",
 		"layerId" : "2",
@@ -17,6 +18,7 @@
         "leaf": true,
         "checked": false,
         "iconCls": "layer2",
+        "iconInfo": "resources/images/layerIcon/Layer2.png"
     },{
 		"id" : "3",
 		"layerId" : "3",
@@ -24,6 +26,7 @@
         "leaf": true,
         "checked": false,
         "iconCls": "layer3",
+        "iconInfo": "resources/images/layerIcon/Layer3.png"
     },{
 		"id" : "4",
 		"layerId" : "4",
@@ -31,6 +34,7 @@
         "leaf": true,
         "checked": false,
         "iconCls": "layer4",
+        "iconInfo": "resources/images/layerIcon/Layer4.png"
     },{
 		"id" : "5",
 		"layerId" : "5",
@@ -38,6 +42,7 @@
         "leaf": true,
         "checked": false,
         "iconCls": "layer5",
+        "iconInfo": "resources/images/layerIcon/Layer5.png"
     },{
 		"id" : "6",
 		"layerId" : "6",
@@ -45,6 +50,7 @@
         "leaf": true,
         "checked": false,
         "iconCls": "layer6",
+        "iconInfo": "resources/images/layerIcon/Layer6.png"
     }]
 },{
 	"id" : "p2",
@@ -53,33 +59,37 @@
     "expanded": true,
     "checked": false,
     "children": [{
-		"id" : "7",
-		"layerId" : "7",
+		"id" : "8",
+		"layerId" : "8",
         "text": "토양측정망",
         "leaf": true,
         "checked": false,
-        "iconCls": "layer7",
-    },{
-		"id" : "8",
-		"layerId" : "8",
-        "text": "골프장",
-        "leaf": true,
-        "checked": false,
         "iconCls": "layer8",
+        "iconInfo": "resources/images/layerIcon/Layer8.png"
     },{
 		"id" : "9",
 		"layerId" : "9",
-        "text": "토양실태조사",
+        "text": "골프장",
         "leaf": true,
         "checked": false,
         "iconCls": "layer9",
+        "iconInfo": "resources/images/layerIcon/Layer9.png"
     },{
 		"id" : "10",
 		"layerId" : "10",
-        "text": "가축매몰지",
+        "text": "토양실태조사",
         "leaf": true,
         "checked": false,
         "iconCls": "layer10",
+        "iconInfo": "resources/images/layerIcon/Layer10.png"
+    },{
+		"id" : "11",
+		"layerId" : "11",
+        "text": "가축매몰지",
+        "leaf": true,
+        "checked": false,
+        "iconCls": "layer11",
+        "iconInfo": "resources/images/layerIcon/Layer11.png"
     }]
 },{
 	"id" : "p3",
@@ -94,6 +104,7 @@
         "leaf": true,
         "checked": false,
         "iconCls": "layer13",
+        "iconInfo": "resources/images/layerIcon/Layer13.png"
     },{
 		"id" : "14",
 		"layerId" : "14",
@@ -101,6 +112,7 @@
         "leaf": true,
         "checked": false,
         "iconCls": "layer14",
+        "iconInfo": "resources/images/layerIcon/Layer14.png"
     },{
 		"id" : "15",
 		"layerId" : "15",
@@ -108,6 +120,7 @@
         "leaf": true,
         "checked": false,
         "iconCls": "layer15",
+        "iconInfo": "resources/images/layerIcon/Layer15.png"
     },{
 		"id" : "16",
 		"layerId" : "16",
@@ -115,5 +128,6 @@
         "leaf": true,
         "checked": false,
         "iconCls": "layer16",
+        "iconInfo": "resources/images/layerIcon/Layer16.png"
     }]
 }]
