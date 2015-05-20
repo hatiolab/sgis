@@ -93,6 +93,11 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
     searchLayerOnOfffHandler:function(selectInfo){
     	var me = this;
     	me.layers = [];
+    	if(selectInfo.length==0){
+    		me.targetGraphicLayer.clear();
+    		me.highlightGraphicLayer.clear();
+    		return;
+    	}
     	Ext.each(selectInfo, function(selectObj, index) {
     		if(selectObj.data.layerId && !isNaN(selectObj.data.layerId)){
     			me.layers.push(selectObj);
