@@ -26,7 +26,7 @@ Ext.define('Sgis.view.west.WestTab2', {
 		layout: {
 	        type: 'accordion',      
 	        animate: true,
-	        multi: true,
+	        multi: true
 	    },
 		items: [{
 			title: '지역검색',
