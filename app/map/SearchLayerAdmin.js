@@ -14,6 +14,8 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 	spSearchBool:true,
 	layers:[],
 	layerDisplayFiledInfo:{},
+	smpLineSymbol:null,
+	simpleFillSymbol:null,
 	
 	filterInfo:{
 		"1" :[{GWMYR:['2010']}, {GWMOD:['상반기', '하반기']}],
@@ -33,12 +35,17 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 		var me = this;
 		me.map = map;
 		me.customDefine();
+		
+		me.smpLineSymbol = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0,0,255,0.8]), 2);
+		me.simpleFillSymbol= new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, me.smpLineSymbol, new dojo.Color([0,0,255,0.1]));
+		
 		me.sourceGraphicLayer = new esri.layers.GraphicsLayer();
 		me.sourceGraphicLayer.id="sourceGraphic";
 		me.map.addLayer(me.sourceGraphicLayer);
 		dojo.connect(me.sourceGraphicLayer, "onClick", function(event){
         	if(event.graphic.img && event.graphic.img =='btn_close' && event.graphic.geometry.uuid){
         		me.sourceGraphicLayer.clear();
+        		me.spSearch();
         	}
 		});
 		
@@ -64,10 +71,8 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
     
     addToMap:function(event){
 		var me = this;
-		var symbol;
         me.toolbar.deactivate();
-        symbol = new esri.symbol.SimpleFillSymbol();
-        
+        me.map.isPan = true;
         if(event.type=='extent'){
         	me.geometry = new esri.geometry.Extent(event);
         }else if(event.type=='point'){
@@ -78,7 +83,7 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
         	me.geometry = new esri.geometry.Polygon(event);
         }
         
-        var graphic = new esri.Graphic(me.geometry, symbol);
+        var graphic = new esri.Graphic(me.geometry, me.simpleFillSymbol);
         me.sourceGraphicLayer.clear();
         me.sourceGraphicLayer.add(graphic);
         
@@ -108,8 +113,10 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
     	if(btnInfo.state){
     		me.toolbar.activate(esri.toolbars.Draw[btnInfo.drawType]);
     		me.map.setMapCursor("default");
+    		me.map.isPan = false;
     	}else{
     		me.toolbar.deactivate();
+    		me.map.isPan = true;
     	}
     },
     
