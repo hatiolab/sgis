@@ -23,9 +23,14 @@ Ext.define('Sgis.view.west.WestTab2', {
 	
 	items: [{
 		xtype: 'panel',
-		layout: 'accordion',
+		layout: {
+	        type: 'accordion',      
+	        animate: true,
+	        multi: true,
+	    },
 		items: [{
 			title: '지역검색',
+			collapsed: false,
 			items: [{
 				xtype: 'form',
 				padding: 10,
@@ -58,6 +63,7 @@ Ext.define('Sgis.view.west.WestTab2', {
 			}]
 		}, {
 			title: '영역검색',
+			collapsed: false,
 			id:'btnHBox',
 			layout: {
 				type: 'hbox',
@@ -99,6 +105,7 @@ Ext.define('Sgis.view.west.WestTab2', {
 			}]
 		}, {
 			title: '레이어',
+			collapsed: false,
 			id:'layerTree2',
 			//hideCollapseTool: true,
 			xtype: 'treepanel',
