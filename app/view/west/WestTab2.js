@@ -6,11 +6,13 @@ Ext.define('Sgis.view.west.WestTab2', {
 		'Sgis.view.west.WestTab2Controller'
 	],
 
-	xtype: 'app-default-west-tab2',
+	xtype: 'app-west-tab2',
 
-	controller: 'default-west-tab2',
+	controller: 'app-west-tab2',
 	
 	title: '자료검색',
+	
+	autoScroll: true,
 	
 	bodyPadding: 10,
 	
@@ -95,10 +97,9 @@ Ext.define('Sgis.view.west.WestTab2', {
 			title: '레이어',
 			//hideCollapseTool: true,
 			xtype: 'treepanel',
-			controller: 'default-west-tab2',
+			controller: 'app-west-tab2',
 			rootVisible: false,
 			useArrows: true,
-			//rowLines: true,
 			bufferedRenderer: false,
 			store : Ext.create('Sgis.store.Layer2TreeStore')
 		}]
