@@ -13,10 +13,10 @@ Ext.define('Sgis.map.DynamicLayerAdmin', {
 			
 		});
 		dojo.connect(me.layer, "onUpdateStart", function(event){	
-			
+			SGIS.loading.execute();
 		});
 		dojo.connect(me.layer, "onUpdateEnd", function(event){	
-			
+			SGIS.loading.finish();
 		});
 		
 		me.layer2 = new esri.layers.ArcGISDynamicMapServiceLayer("http://cetech.iptime.org:6080/arcgis/rest/services/Layer2/MapServer");
@@ -27,13 +27,14 @@ Ext.define('Sgis.map.DynamicLayerAdmin', {
 			
 		});
 		dojo.connect(me.layer2, "onUpdateStart", function(event){	
-			
+			SGIS.loading.execute();
 		});
 		dojo.connect(me.layer2, "onUpdateEnd", function(event){	
-			
+			SGIS.loading.finish();
 		});
 		
 		Sgis.getApplication().addListener('dynamicLayerOnOff', me.dynamicLayerOnOffHandler, me);
+		Sgis.getApplication().addListener('leftTabChange', me.leftTabChangeHandler, me); //레이어탭 app-west-tab1 //자료검색탭활 app-west-tab2
     },
     
     dynamicLayerOnOffHandler: function(selectInfo){
@@ -57,5 +58,16 @@ Ext.define('Sgis.map.DynamicLayerAdmin', {
 				me.layer2.setVisibleLayers(layers2);
 			}
 		});
+    },
+    
+    leftTabChangeHandler: function(tabXtype){
+    	var me = this;
+    	if(tabXtype=='app-west-tab1'){
+    		me.layer.setVisibility(true);
+    		me.layer2.setVisibility(true);
+    	}else{
+    		me.layer.setVisibility(false);
+    		me.layer2.setVisibility(false);
+    	}
     }
 });

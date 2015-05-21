@@ -67,6 +67,7 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 		
 		Sgis.getApplication().addListener('searchLayerOnOff', me.searchLayerOnOfffHandler, me);
 		Sgis.getApplication().addListener('searchBtnClick', me.searchBtnClickfHandler, me);
+		Sgis.getApplication().addListener('leftTabChange', me.leftTabChangeHandler, me); //레이어탭 app-west-tab1 //자료검색탭활 app-west-tab2
     },
     
     addToMap:function(event){
@@ -138,6 +139,19 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 		});
     },
     
+    leftTabChangeHandler: function(tabXtype){
+    	var me = this;
+    	if(tabXtype=='app-west-tab2'){
+    		me.sourceGraphicLayer.setVisibility(true);
+    		me.targetGraphicLayer.setVisibility(true);
+    		me.highlightGraphicLayer.setVisibility(true);
+    	}else{
+    		me.sourceGraphicLayer.setVisibility(false);
+    		me.targetGraphicLayer.setVisibility(false);
+    		me.highlightGraphicLayer.setVisibility(false);
+    	}
+    },
+    
     getLayerDisplayFiledInfo:function(){
 		var me = this;
 		var queryTask = new esri.tasks.QueryTask(me.layer1Url + "/17");
@@ -163,10 +177,12 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
     
     spSearch:function(filterObject){
 		var me = this;
+		SGIS.loading.execute();
 		me.targetGraphicLayer.clear();
 		me.highlightGraphicLayer.clear();
 		
 		if(me.sourceGraphicLayer.graphics.length==0 || !me.geometry){
+			SGIS.loading.finish();
 			return;
 		}
 		
@@ -209,6 +225,7 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 						complteData.push(resultData);
 						if(exeComplteCnt==me.layers.length){
 							Sgis.getApplication().fireEvent('searchComplte', complteData);
+							SGIS.loading.finish();
 						}
 					}
 					else
@@ -230,6 +247,7 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 				    			complteData.push(resultData);
 								if(exeComplteCnt==me.layers.length){
 									Sgis.getApplication().fireEvent('searchComplte', complteData);
+									SGIS.loading.finish();
 								}
 				    		}
 						});

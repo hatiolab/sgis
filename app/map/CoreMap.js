@@ -13,9 +13,13 @@ Ext.define('Sgis.map.CoreMap', {
 	map:null,
 	dynamicLayerAdmin:null,
 	
-	initComponent: function() {
-		this.on('render', this.mapRendered, this);
-		this.callParent();
+//	initComponent: function() {
+//		this.callParent();
+//	},
+	
+	onRender: function(){
+		this.callParent(arguments);
+		this.mapRendered();
 	},
 	
 	mapRendered: function(p){

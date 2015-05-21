@@ -41,7 +41,11 @@ Ext.define('Sgis.Application', {
 	    'searchLayerOnOff',
 	    'searchBtnClick',
 	    'drawComplte',
-	    'searchComplte'
+	    'searchComplte',
+	    'executeMode',
+	    'finishMode',
+	    'abortFinishMode',
+	    'leftTabChange' //왼쪽에 탭변경시 발생.
 	],
 
 	launch: function () {

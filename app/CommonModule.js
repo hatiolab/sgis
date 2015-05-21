@@ -10,6 +10,7 @@ Ext.define('Sgis.CommonModule', {
 
 	mixins : {
 		msg : 'Cmm.mixin.Msg',
-		menu : 'Cmm.mixin.Menu'
+		menu : 'Cmm.mixin.Menu',
+		loading : 'Cmm.mixin.Loading'
 	}
 });
