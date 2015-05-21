@@ -39,6 +39,7 @@ Ext.define('Sgis.view.west.WestTab2', {
 					align: 'stretch'
 				},
 				items: [{
+					id: 'cmbArea1',
 					itemId: 'cmbArea1',
 					xtype: 'combo',
 					fieldLabel: '시도',
@@ -46,6 +47,7 @@ Ext.define('Sgis.view.west.WestTab2', {
 					displayField: 'name',
 					valueField: 'id'
 				}, {
+					id: 'cmbArea2',
 					itemId: 'cmbArea2',
 					xtype: 'combo',
 					fieldLabel: '시군구',
@@ -53,6 +55,7 @@ Ext.define('Sgis.view.west.WestTab2', {
 					displayField: 'name',
 					valueField: 'id'
 				}, {
+					id: 'cmbArea3',
 					itemId: 'cmbArea3',
 					xtype: 'combo',
 					fieldLabel: '읍면동',
