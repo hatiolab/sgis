@@ -11,63 +11,42 @@ Ext.define('Sgis.store.Area1Store', {
 	listeners: {
 		beforeload: function(store) {
 			Ext.defer(function() {
-	            store.setData([{
-	        		"id" : "1",
-	        		"name" : "강원도"
-	        	},{
-	        		"id" : "2",
-	        		"name" : "경기도"
-	        	},{
-	        		"id" : "3",
-	        		"name" : "경상남도"
-	        	},{
-	        		"id" : "4",
-	        		"name" : "경상북도"
-	        	},{
-	        		"id" : "5",
-	        		"name" : "광주광역시"
-	        	},{
-	        		"id" : "6",
-	        		"name" : "대구광역시"
-	        	},{
-	        		"id" : "7",
-	        		"name" : "대전광역시"
-	        	},{
-	        		"id" : "8",
-	        		"name" : "부산광역시"
-	        	},{
-	        		"id" : "9",
-	        		"name" : "세종특별자치시"
-	        	},{
-	        		"id" : "10",
-	        		"name" : "울산광역시"
-	        	},{
-	        		"id" : "11",
-	        		"name" : "인천광역시"
-	        	},{
-	        		"id" : "12",
-	        		"name" : "전라남도"
-	        	},{
-	        		"id" : "13",
-	        		"name" : "전라북도"
-	        	},{
-	        		"id" : "14",
-	        		"name" : "제주특별자치도"
-	        	},{
-	        		"id" : "15",
-	        		"name" : "충청남도"
-	        	},{
-	        		"id" : "16",
-	        		"name" : "충청북도"
-	        	}]);
+				var queryTask = new esri.tasks.QueryTask("http://cetech.iptime.org:6080/arcgis/rest/services/Layer2/MapServer/22"); //시도
+				var query = new esri.tasks.Query();
+				query.returnGeometry = false;
+				query.where = "1=1";
+				query.outFields = ["*"];
+				queryTask.execute(query,  function(results){
+					var data = results.features;
+					data.sort(function(a,b){
+						if(a.attributes.DO_NM > b.attributes.DO_NM){
+							return 1;
+						}else if(a.attributes.DO_NM < b.attributes.DO_NM){
+							return -1;
+						}else{
+							return 0;
+						}
+					});
+					var receiveData = [];
+					Ext.each(data, function(media, index) {
+						receiveData.push({id:media.attributes.ADM_CD, name:media.attributes.DO_NM})
+		   				if(data.length==index+1){
+		   					store.setData(receiveData);
+		   				}
+						/*
+						store.filter({
+						    property: 'id',
+						    value: '2',
+						    anyMatch: true,
+						    caseSensitive: false
+						})
+						*/
+					});
+				});
+				dojo.connect(queryTask, "onError", function(err) {
+					alert(err);
+				});
 			}, 1, this);
-        }
-    },
-		
-	proxy: {
-        type: 'memory',
-        reader: {
-            type: 'json'
         }
     }
 });

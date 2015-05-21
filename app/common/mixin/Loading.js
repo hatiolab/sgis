@@ -45,6 +45,7 @@ Ext.define('Cmm.mixin.Loading', function() {
 	}
 
 	function abortFinish() {
+		_executeCount == 0;
 		Sgis.getApplication().fireEvent('abortFinishMode', null);
 	}
 	return {

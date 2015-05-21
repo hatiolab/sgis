@@ -29,15 +29,40 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
     },
 	
 	onArea1Change: function(combo, newValue, oldValue, eOpts) {
-		SGIS.msg.alert(newValue + ' Selected!');
+		var view2 = Ext.getCmp('cmbArea2')
+		var store2 = view2.getStore();
+		store2.clearFilter();
+		store2.filter(function(item){
+			return (item.id+"").substring(0,2) == newValue;
+		})
+		
+		var store3 = Ext.getCmp('cmbArea3').getStore();
+		store3.clearFilter();
+		store3.filter({
+		    property: 'id',
+		    value: 'none'
+		})
+		
+		view2.reset();
 	},
 	
 	onArea2Change: function(combo, newValue, oldValue, eOpts) {
-		SGIS.msg.alert(newValue + ' Selected!');
+		var view3 = Ext.getCmp('cmbArea3')
+		var store3 = view3.getStore();
+		store3.clearFilter();
+		store3.filter(function(item){
+			try{
+				return (item.id+"").substring(0,4) == newValue.substring(0,4);
+			}catch(e){
+				return false;
+			}
+			
+		})
+		view3.reset();
 	},
 	
 	onArea3Change: function(combo, newValue, oldValue, eOpts) {
-		SGIS.msg.alert(newValue + ' Selected!');
+		
 	},
 
 	onAreaCircleClick: function(button, e) {

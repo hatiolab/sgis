@@ -7,12 +7,38 @@ Ext.define('Sgis.store.Area3Store', {
 	autoLoad: true,
 
 	remoteSort: true,
-
-	proxy: {
-		type: 'rest',
-		url: '/resources/data/west/area3.json',
-		reader: {
-			type: 'json'
-		}
-	}
+	
+	listeners: {
+		beforeload: function(store) {
+			Ext.defer(function() {
+				var queryTask = new esri.tasks.QueryTask("http://cetech.iptime.org:6080/arcgis/rest/services/Layer2/MapServer/24"); //법정동
+				var query = new esri.tasks.Query();
+				query.returnGeometry = false;
+				query.where = "1=1";
+				query.outFields = ["*"];
+				queryTask.execute(query,  function(results){
+					var data = results.features;
+					data.sort(function(a,b){
+						if(a.attributes.DONG_NM > b.attributes.DONG_NM){
+							return 1;
+						}else if(a.attributes.DONG_NM < b.attributes.DONG_NM){
+							return -1;
+						}else{
+							return 0;
+						}
+					});
+					var receiveData = [];
+					Ext.each(data, function(media, index) {
+						receiveData.push({id:media.attributes.ADM_CD, name:media.attributes.DONG_NM})
+		   				if(data.length==index+1){
+		   					store.setData(receiveData);
+		   				}
+					});
+				});
+				dojo.connect(queryTask, "onError", function(err) {
+					alert(err);
+				});
+			}, 1, this);
+        }
+    }
 });
