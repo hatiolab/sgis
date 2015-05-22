@@ -68,6 +68,7 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 		Sgis.getApplication().addListener('searchLayerOnOff', me.searchLayerOnOfffHandler, me);
 		Sgis.getApplication().addListener('searchBtnClick', me.searchBtnClickfHandler, me);
 		Sgis.getApplication().addListener('leftTabChange', me.leftTabChangeHandler, me); //레이어탭 app-west-tab1 //자료검색탭활 app-west-tab2
+		Sgis.getApplication().addListener('areaSelect', me.areaSelectHandler, me); 
     },
     
     addToMap:function(event){
@@ -152,6 +153,36 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
     	}
     },
     
+    areaSelectHandler: function(info){
+    	var me = this;
+    	me.sourceGraphicLayer.clear();
+		me.targetGraphicLayer.clear();
+		me.highlightGraphicLayer.clear();
+		
+		var queryTask = new esri.tasks.QueryTask("http://cetech.iptime.org:6080/arcgis/rest/services/Layer2/MapServer/" + info.layerId);
+		var query = new esri.tasks.Query();
+		query.returnGeometry = true;
+		query.outSpatialReference = {"wkid":102100};
+		if(info.layerId!=24){
+			query.where = "ADM_CD = '" + info.admCd + "'";
+		}else{
+			query.where = "ADM_CD = " + info.admCd;
+		}
+		query.outFields = ["*"];
+		queryTask.execute(query,  function(results){
+			Ext.each(results.features, function(obj, index) {
+				obj.setSymbol(me.simpleFillSymbol);
+	    		me.sourceGraphicLayer.add(obj);
+	    		var extent = esri.geometry.Polygon(obj.geometry).getExtent();
+	    		me.map.setExtent(extent, true);
+	    		me.geometry = obj.geometry;
+	    		me.spSearch();
+			});
+		});
+		dojo.connect(queryTask, "onError", function(err) {
+		});
+    },
+    
     getLayerDisplayFiledInfo:function(){
 		var me = this;
 		var queryTask = new esri.tasks.QueryTask(me.layer1Url + "/17");
@@ -181,7 +212,7 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 		me.targetGraphicLayer.clear();
 		me.highlightGraphicLayer.clear();
 		
-		if(me.sourceGraphicLayer.graphics.length==0 || !me.geometry){
+		if(me.sourceGraphicLayer.graphics.length==0 || !me.geometry || me.layers.length==0){
 			SGIS.loading.finish();
 			return;
 		}

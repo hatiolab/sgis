@@ -33,14 +33,6 @@ Ext.define('Sgis.store.Area1Store', {
 		   				if(data.length==index+1){
 		   					store.setData(receiveData);
 		   				}
-						/*
-						store.filter({
-						    property: 'id',
-						    value: '2',
-						    anyMatch: true,
-						    caseSensitive: false
-						})
-						*/
 					});
 				});
 				dojo.connect(queryTask, "onError", function(err) {

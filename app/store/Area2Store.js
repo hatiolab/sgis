@@ -27,7 +27,7 @@ Ext.define('Sgis.store.Area2Store', {
 							return 0;
 						}
 					});
-					var receiveData = [];
+					var receiveData = [{id:'_cancel_', name:'--선택해제--'}];
 					Ext.each(data, function(media, index) {
 						receiveData.push({id:media.attributes.ADM_CD, name:media.attributes.CTY_NM})
 		   				if(data.length==index+1){

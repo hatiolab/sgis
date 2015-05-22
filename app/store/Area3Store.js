@@ -14,8 +14,8 @@ Ext.define('Sgis.store.Area3Store', {
 				var queryTask = new esri.tasks.QueryTask("http://cetech.iptime.org:6080/arcgis/rest/services/Layer2/MapServer/24"); //법정동
 				var query = new esri.tasks.Query();
 				query.returnGeometry = false;
-				query.where = "1=1";
-				query.outFields = ["*"];
+				query.where = '1=1';
+				query.outFields = ['ADM_CD', 'DONG_NM'];
 				queryTask.execute(query,  function(results){
 					var data = results.features;
 					data.sort(function(a,b){
@@ -27,7 +27,7 @@ Ext.define('Sgis.store.Area3Store', {
 							return 0;
 						}
 					});
-					var receiveData = [];
+					var receiveData = [{id:'_cancel_', name:'--선택해제--'}];
 					Ext.each(data, function(media, index) {
 						receiveData.push({id:media.attributes.ADM_CD, name:media.attributes.DONG_NM})
 		   				if(data.length==index+1){

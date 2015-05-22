@@ -53,7 +53,8 @@ Ext.define('Sgis.view.west.WestTab2', {
 					fieldLabel: '시군구',
 					store: Ext.create('Sgis.store.Area2Store'),
 					displayField: 'name',
-					valueField: 'id'
+					valueField: 'id',
+					disabled: true
 				}, {
 					id: 'cmbArea3',
 					itemId: 'cmbArea3',
@@ -61,7 +62,8 @@ Ext.define('Sgis.view.west.WestTab2', {
 					fieldLabel: '읍면동',
 					store: Ext.create('Sgis.store.Area3Store'),
 					displayField: 'name',
-					valueField: 'id'
+					valueField: 'id',
+					disabled: true
 				}]
 			}]
 		}, {

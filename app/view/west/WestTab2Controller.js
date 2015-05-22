@@ -9,13 +9,13 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 	
 	control: {
 		'#cmbArea1': {
-			change: 'onArea1Change'
+			select: 'onArea1Change'
 		},
 		'#cmbArea2': {
-			change: 'onArea2Change'
+			select: 'onArea2Change'
 		},
 		'#cmbArea3': {
-			change: 'onArea3Change'
+			select: 'onArea3Change'
 		},
 		'treepanel': {
 			checkchange: 'onCheckChanged'
@@ -28,41 +28,60 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 		Sgis.getApplication().addListener('drawComplte', me.drawComplteHandler, me);
     },
 	
-	onArea1Change: function(combo, newValue, oldValue, eOpts) {
-		var view2 = Ext.getCmp('cmbArea2')
+	onArea1Change: function(combo, record, eOpts) {
+		Sgis.getApplication().fireEvent('areaSelect', {admCd:record.data.id, layerId:'22'});
+		var view2 = Ext.getCmp('cmbArea2');
+		var view3 = Ext.getCmp('cmbArea3')
 		var store2 = view2.getStore();
 		store2.clearFilter();
 		store2.filter(function(item){
-			return (item.id+"").substring(0,2) == newValue;
-		})
-		
-		var store3 = Ext.getCmp('cmbArea3').getStore();
-		store3.clearFilter();
-		store3.filter({
-		    property: 'id',
-		    value: 'none'
-		})
-		
+			if(item.id=='_cancel_'){
+				return true;
+			}
+			return (item.id+"").substring(0,2) == record.data.id;
+		})		
 		view2.reset();
+		view2.setDisabled(false);
+		view3.setDisabled(true);
 	},
 	
-	onArea2Change: function(combo, newValue, oldValue, eOpts) {
+	onArea2Change: function(combo, record, eOpts) {
 		var view3 = Ext.getCmp('cmbArea3')
 		var store3 = view3.getStore();
+		var admCd = record.data.id;
+		if(admCd!='_cancel_'){
+			Sgis.getApplication().fireEvent('areaSelect', {admCd:record.data.id, layerId:'23'});
+			view3.setDisabled(false);
+		}else{
+			admCd = Ext.getCmp('cmbArea1').getSelection().data.id;
+			Sgis.getApplication().fireEvent('areaSelect', {admCd:admCd, layerId:'22'});
+			view3.setDisabled(true);
+		}
+		
 		store3.clearFilter();
 		store3.filter(function(item){
 			try{
-				return (item.id+"").substring(0,4) == newValue.substring(0,4);
+				if(item.id=='_cancel_'){
+					return true;
+				}
+				return (item.id+"").substring(0,4) == record.data.id.substring(0,4);
 			}catch(e){
 				return false;
 			}
 			
 		})
+		
 		view3.reset();
 	},
 	
-	onArea3Change: function(combo, newValue, oldValue, eOpts) {
-		
+	onArea3Change: function(combo, record, eOpts) {
+		var admCd = record.data.id;
+		if(admCd!='_cancel_'){
+			Sgis.getApplication().fireEvent('areaSelect', {admCd:admCd, layerId:'24'});
+		}else{
+			admCd = Ext.getCmp('cmbArea2').getSelection().data.id;
+			Sgis.getApplication().fireEvent('areaSelect', {admCd:admCd, layerId:'23'});
+		}
 	},
 
 	onAreaCircleClick: function(button, e) {

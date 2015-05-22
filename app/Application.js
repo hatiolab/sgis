@@ -45,7 +45,8 @@ Ext.define('Sgis.Application', {
 	    'executeMode',
 	    'finishMode',
 	    'abortFinishMode',
-	    'leftTabChange' //왼쪽에 탭변경시 발생.
+	    'leftTabChange', //왼쪽에 탭변경시 발생.
+	    'areaSelect' //지역을 선택시 발생.
 	],
 
 	launch: function () {
