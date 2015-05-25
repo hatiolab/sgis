@@ -17,7 +17,7 @@ Ext.define('Sgis.view.west.West', {
 	width: 285,
 
 	collapsible: true,
-	
+		
 	items: [{
 		xtype: 'app-west-tab1'
 	}, {

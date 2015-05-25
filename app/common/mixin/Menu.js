@@ -65,8 +65,7 @@ Ext.define('Cmm.mixin.Menu', function() {
 		var current = null;
 		
 		Ext.each(south.getLayout().getLayoutItems(), function(comp) {
-			var className = Ext.getClass(comp).getName();
-			if(className == view) {
+			if(comp.dynamicId == config.dynamicId) {
 				current = comp;
 				return false;
 			}
@@ -85,15 +84,16 @@ Ext.define('Cmm.mixin.Menu', function() {
 		}
 
 		south.fireEvent('showcontent', content, screen);
+		return current;
 	}
 	
-	function removeSearchGrid(view) {
+	function removeSearchGrid(viewId) {
 		var south = Ext.getCmp('south');
 		var current = null;
 		
 		Ext.each(south.getLayout().getLayoutItems(), function(comp) {
-			var className = Ext.getClass(comp).getName();
-			if(className == view) {
+			var dynamicId = comp.dynamicId;
+			if(dynamicId == viewId) {
 				current = comp;
 				return false;
 			}

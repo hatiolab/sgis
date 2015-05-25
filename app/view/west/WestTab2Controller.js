@@ -5,6 +5,8 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 	
 	extend: 'Ext.app.ViewController',
 	
+	requires: ['Sgis.view.south.LayerDynamicGrid'],
+	
 	alias: 'controller.app-west-tab2',
 	
 	control: {
@@ -114,7 +116,7 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 			var view = Ext.getCmp("layerTree2");
 			if(view.xtype == 'treepanel') {
 				Sgis.getApplication().fireEvent('searchLayerOnOff', view.getChecked());
-				this.layerSearchData(node, checked);
+				this.searchLayerData(node, checked);
 			}
 		}
 	},
@@ -125,7 +127,7 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 		
 		Ext.each(children, function(child, index) {
 			child.set('checked', checked);
-			me.layerSearchData(child, checked);
+			me.searchLayerData(child, checked);
 			
 			if(index == children.length - 1) {
 				var view = Ext.getCmp("layerTree2");
@@ -136,16 +138,16 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 		});
 	},
 	
-	layerSearchData: function(node, checked) {
+	searchLayerData: function(node, checked) {
 		var nodeId = node.get('id');
 		nodeId = parseInt(nodeId);
 		
 		if(!isNaN(nodeId)) {
-			var viewName = 'Sgis.view.south.SearchData' + nodeId + 'Grid';
+			var viewName = 'Sgis.view.south.LayerDynamicGrid';
 			if(checked) {
-				SGIS.addSearchGrid(viewName, {title : node.get('text')});
+				SGIS.addSearchGrid(viewName, { node : node }, { dynamicId : nodeId, title : node.get('text') });
 			} else {
-				SGIS.removeSearchGrid(viewName);
+				SGIS.removeSearchGrid(nodeId);
 			}
 		}
 	}

@@ -3,7 +3,7 @@ Ext.define('Sgis.view.south.South', {
 	extend: 'Ext.tab.Panel',
 	
 	requires: [
-		'Sgis.view.south.SearchData1Grid'
+		'Sgis.view.south.LayerDynamicGrid'
 	],
 	
 	xtype: 'app-south',

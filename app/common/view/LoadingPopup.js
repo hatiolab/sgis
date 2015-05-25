@@ -13,7 +13,7 @@ Ext.define('Cmm.view.LoadingPopup', {
 	    header: false,
        	border: false,
        	closable: false,
-       	draggable: false,
+       	draggable: false
 	},
 	
 	layout: {
