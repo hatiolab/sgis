@@ -139,15 +139,15 @@ Ext.define('Sgis.view.west.WestTab2Controller', {
 	},
 	
 	searchLayerData: function(node, checked) {
-		var nodeId = node.get('id');
-		nodeId = parseInt(nodeId);
+		var nodeIdStr = node.get('id');
+		var nodeId = parseInt(nodeIdStr);
 		
 		if(!isNaN(nodeId)) {
 			var viewName = 'Sgis.view.south.LayerDynamicGrid';
 			if(checked) {
-				SGIS.addSearchGrid(viewName, { node : node }, { dynamicId : nodeId, title : node.get('text') });
+				SGIS.addSearchGrid(viewName, { node : node }, { layerId : nodeIdStr, title : node.get('text') });
 			} else {
-				SGIS.removeSearchGrid(nodeId);
+				SGIS.removeSearchGrid(nodeIdStr);
 			}
 		}
 	}

@@ -4,20 +4,19 @@ Ext.define('Sgis.store.LayerDynamicStore', {
 		
 	fields: [],
 
-	autoLoad: true,
+	autoLoad: false,
+		
+	remoteFilter: false,
 
-	remoteSort: true,
+	remoteSort: false,
 	
 	pageSize: 15,
 
 	proxy: {
-		type: 'rest',
-		url: '/resources/data/south/search-data1.json',
+		type: 'memory',
+		enablePaging: true,
 		reader: {
-			type : 'json',
-			rootProperty : 'items',
-			successProperty : 'success',
-			totalProperty : 'total'
+			type: 'json'
 		}
 	}
 });

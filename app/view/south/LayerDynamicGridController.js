@@ -19,29 +19,35 @@ Ext.define('Sgis.view.south.LayerDynamicGridController', {
 		Sgis.getApplication().addListener('searchComplte', me.searchComplteHandler, me);
     },
     
-	reloadGrid: function() {
-		var toolbar = this.getView().down(' toolbar');
-		var pageSize = toolbar.down('#btnCountPerPage').getText();
-		pageSize = parseInt(pageSize);
-		var year = toolbar.down('#btnYear').getText();
-		var quarter = toolbar.down('#btnQuarter').getText();
+	reloadGrid: function(btn) {
+		if(btn.itemId == 'btnCountPerPage') {
+			var pageSize = btn.getText();
+			pageSize = parseInt(pageSize);
+			this.getView().getStore().setPageSize(pageSize);
+			this.getView().getStore().load();
+			
+		} else {
+			// TODO Local Filter
+			var toolbar = this.getView().down(' toolbar');
+			var year = toolbar.down('#btnYear').getText();
+			var quarter = toolbar.down('#btnQuarter').getText();
 		
-		var params = {
-			nodeId : this.getView().dynamicId,
-			pageSize : pageSize,
-			year : year,
-			quarter : quarter
-		};
+			var params = {
+				layerId : this.getView().layerId,
+				year : year,
+				quarter : quarter
+			};
 		
-		console.log(params);
+			console.log(params);
 		
-		// TODO 확인 필요 
-		Sgis.getApplication().fireEvent('searchParameters', this.getView().nodeId, params);
+			// TODO 확인 필요 
+			Sgis.getApplication().fireEvent('searchParameters', params.layerId, params);			
+		}
 	},
 	
     searchComplteHandler: function(results) {
 		var result = results[0];
-		console.log(result);
+		// console.log(result);
 		var grid = this.getView();
 		var store = grid.getStore();
 		
@@ -50,16 +56,15 @@ Ext.define('Sgis.view.south.LayerDynamicGridController', {
 			grid.reconfigureDynamicGrid(data[0], data[1]);			
 		} else {
 			var data = this.getLayerData(result);
-			store.setData(data);
-			store.load();
+			store.getProxy().setData(data);
+			store.read();
 		}
-
     },
 	
 	getLayerDataAll : function(results) {
 		var headers = this.getLayerMetadata(results);
 		var dataList = this.getLayerData(results);
-		return [headers, dataList];		
+		return [headers, dataList];
 	},
 	
 	/**
@@ -101,5 +106,9 @@ Ext.define('Sgis.view.south.LayerDynamicGridController', {
 		}
 		
 		return dataList;
+	},
+	
+	reconfigureSearchForm : function() {
+		// TODO
 	}
 });

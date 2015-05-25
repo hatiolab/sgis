@@ -65,7 +65,7 @@ Ext.define('Cmm.mixin.Menu', function() {
 		var current = null;
 		
 		Ext.each(south.getLayout().getLayoutItems(), function(comp) {
-			if(comp.dynamicId == config.dynamicId) {
+			if(comp.layerId == config.layerId) {
 				current = comp;
 				return false;
 			}
@@ -92,8 +92,7 @@ Ext.define('Cmm.mixin.Menu', function() {
 		var current = null;
 		
 		Ext.each(south.getLayout().getLayoutItems(), function(comp) {
-			var dynamicId = comp.dynamicId;
-			if(dynamicId == viewId) {
+			if(comp.layerId == viewId) {
 				current = comp;
 				return false;
 			}

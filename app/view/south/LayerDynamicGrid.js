@@ -3,13 +3,14 @@ Ext.define('Sgis.view.south.LayerDynamicGrid', {
 	extend : 'Ext.grid.Panel',
 	
 	requires : [
+		'Ext.ux.data.PagingMemoryProxy',
 		'Sgis.store.LayerDynamicStore',
 		'Sgis.view.south.LayerDynamicGridController'
 	],
 	
 	xtype : 'layer_dynamic_grid',
 	
-	dynamicId : 0,
+	layerId : '0',
 	
 	controller : 'layer_dynamic_grid',
 
@@ -109,7 +110,8 @@ Ext.define('Sgis.view.south.LayerDynamicGrid', {
 		for(var i = 0 ; i < headers.length ; i++) {
 			columns.push({
 				text : headers[i].text,
-				dataIndex : headers[i].dataIndex
+				dataIndex : headers[i].dataIndex,
+				flex : 1
 			})
 		}
 		
@@ -121,6 +123,7 @@ Ext.define('Sgis.view.south.LayerDynamicGrid', {
 	createDynamicStore : function(headers, dataList) {
 
 		var store = this.getStore();
+		var pageSize = this.getPageSize();
 		
 		if(store == null || !store.fields) {
 			var fields = [];
@@ -129,17 +132,23 @@ Ext.define('Sgis.view.south.LayerDynamicGrid', {
 				fields.push(headers[i].dataIndex);	
 			}
 		
-			store = Ext.data.Store({
+			store = Ext.create('Sgis.store.LayerDynamicStore', {
 				fields: fields,
 				data: dataList
 			});
-					
-		} else {
-			store.setData(dataList);
+			
 		}
-		
+
+		store.setPageSize(pageSize);
+		store.getProxy().setData(dataList);
 		this.bindPagingToolbar(store);
 		return store;
+	},
+	
+	getPageSize : function() {
+		var toolbar = this.down(' toolbar');
+		var pageSize = toolbar.down('#btnCountPerPage').getText();
+		return parseInt(pageSize);		
 	},
 	
 	bindPagingToolbar : function(store) {
