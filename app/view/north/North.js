@@ -84,7 +84,12 @@ Ext.define('Sgis.view.north.North', {
 				xtype: 'button',
 				text: '저장',
 				handler: 'onClickSave'
-			}, '->', {
+			}, {
+				xtype: 'button',
+				text: '흑백',
+				handler: 'onClickGray',
+				enableToggle: true,
+			},'->', {
 				id: 'mapmode',
 				xtype: 'cycle',
 				showText: true,

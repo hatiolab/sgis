@@ -12,6 +12,12 @@ Ext.define('Sgis.map.CoreMap', {
 	
 	map:null,
 	dynamicLayerAdmin:null,
+	geometryService:null,
+	unit:null,
+	measureCallback:null,
+	measureScope:null,
+	smpLineSymbol:null, 
+	simpleFillSymbol:null,
 	
 //	initComponent: function() {
 //		this.callParent();
@@ -44,11 +50,13 @@ Ext.define('Sgis.map.CoreMap', {
   		         "esri/symbols/PictureMarkerSymbol",
   		         "esri/symbols/Font",
   		         "esri/symbols/TextSymbol",
-
+  		         "esri/tasks/AreasAndLengthsParameters",
   		         "dijit/layout/BorderContainer",
   		         "dijit/layout/ContentPane",
   		         "dojox/uuid/generateRandomUuid"],  
   		         function() {
+		        	esri.config.defaults.io.proxyUrl = "http://" + window.location.hostname + ":8080/proxy/proxy.jsp";
+		    		esri.config.defaults.io.alwaysUseProxy = true;
 		        	me.map = new esri.Map('_mapDiv_', {
 		        		isDoubleClickZoom:false,
 		    	     	isPan:true,
@@ -60,7 +68,15 @@ Ext.define('Sgis.map.CoreMap', {
 		        	me.map.setLevel(1+6);
 		        	me.dynamicLayerAdmin = Ext.create('Sgis.map.DynamicLayerAdmin', me.map);
 		        	me.searchLayerAdmin = Ext.create('Sgis.map.SearchLayerAdmin', me.map);
-      		        	    
+		        	me.geometryService = new esri.tasks.GeometryService("http://localhost:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer");	
+		        	me.toolbar = new ash.map.toolbars.CustomDraw(me.map, {showTooltips:false}, true, me.map.graphics);
+		        	dojo.connect(me.toolbar, "onDrawEnd", function(event){
+		    			me.map.setMapCursor("default");
+		    			me.measure(event);
+		    		});
+		        	me.smpLineSymbol = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0,0,255,0.8]), 2);
+		    		me.simpleFillSymbol= new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, me.smpLineSymbol, new dojo.Color([0,0,255,0.1]));
+		        	Sgis.getApplication().coreMap = me;
         });
     },
     
@@ -143,5 +159,54 @@ Ext.define('Sgis.map.CoreMap', {
 			});
 			this.map.resize();	
 		}
+	},
+	
+	areaMeasureReady:function(unit, callback, scope){
+		var me = this;
+		me.map.graphics.clear();
+		me.unit = unit;
+		me.measureCallback = callback;
+		me.measureScope = scope;
+		me.toolbar.activate('polygon');
+		me.map.setMapCursor("default");
+		me.map.isPan = false;
+	},
+	
+	measure:function(event){
+		var me = this;
+		me.toolbar.deactivate();
+		me.map.isPan = true;
+		
+		var polygon = new esri.geometry.Polygon(event);
+		var graphic = new esri.Graphic(polygon, me.simpleFillSymbol);
+		
+		me.map.graphics.add(graphic);
+		dojo.connect(me.map.graphics, "onClick", function(event){
+        	if(event.graphic.img && event.graphic.img =='btn_close' && event.graphic.geometry.uuid){
+        		me.map.graphics.clear();
+        	}
+		});
+		
+		var symbol = new esri.symbol.PictureMarkerSymbol('resources/images/btn_close.png' , 16, 16);
+        var point = null;
+        if(event.type=='polygon'){
+        	var finalRing = event.rings[0][event.rings[0].length-1];
+    		point = new esri.geometry.Point(finalRing[0], finalRing[1], new esri.SpatialReference({"wkid":102100}));
+        }else{
+    		point = new esri.geometry.Point(event.xmax, event.ymax, new esri.SpatialReference({"wkid":102100}));
+        }
+		point.uuid = dojo.dojox.uuid.generateRandomUuid();
+		var delGraphic = new esri.Graphic(point, symbol);
+		delGraphic.img = 'btn_close'; 
+		me.map.graphics.add(delGraphic);
+		
+		
+		var params = new esri.tasks.AreasAndLengthsParameters();
+	    params.polygons  = [ polygon ]
+	    params.areaUnit = esri.tasks.GeometryService[me.unit]
+	    
+	    me.geometryService.areasAndLengths(params, function(result){
+	    	me.measureCallback.apply(me.measureScope, [result]);
+	  	});
 	}
 });

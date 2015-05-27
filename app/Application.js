@@ -16,6 +16,8 @@ Ext.define('Sgis.Application', {
 	extend: 'Ext.app.Application',
 
 	name: 'Sgis',
+	
+	coreMap:null,
 
 	stores: [
 		'Sgis.store.LayerTreeStore',
