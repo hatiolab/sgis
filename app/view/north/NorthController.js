@@ -37,7 +37,7 @@ Ext.define('Sgis.view.north.NorthController', {
 	},
 	
 	onClickSave: function () {
-		SGIS.msg.alert('저장 Clicked!');
+		Sgis.getApplication().coreMap.printTask.execute();
 	},
 	
 	onClickGray: function (button) {

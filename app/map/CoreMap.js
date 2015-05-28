@@ -22,6 +22,8 @@ Ext.define('Sgis.map.CoreMap', {
 	extentReg:[],
 	extentRegAble:true,
 	extentUnReIdx:0,
+	printTask:null,
+	backAndWhite:false,
 	
 //	initComponent: function() {
 //		this.callParent();
@@ -70,14 +72,22 @@ Ext.define('Sgis.map.CoreMap', {
 		        	});
 		        	me.baseMapInit();
 		        	me.map.setLevel(1+6);
-		        	me.dynamicLayerAdmin = Ext.create('Sgis.map.DynamicLayerAdmin', me.map);
-		        	me.searchLayerAdmin = Ext.create('Sgis.map.SearchLayerAdmin', me.map);
-		        	me.geometryService = new esri.tasks.GeometryService("http://localhost:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer");	
-		        	me.toolbar = new ash.map.toolbars.CustomDraw(me.map, {showTooltips:false}, true, me.map.graphics);
-		        	dojo.connect(me.toolbar, "onDrawEnd", function(event){
-		    			me.map.setMapCursor("default");
-		    			me.measure(event);
-		    		});
+		        	me.geometryService = new esri.tasks.GeometryService("http://localhost:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+		        	
+		        	Ext.Loader.loadScript({url:'app/map/toolbar/CustomDraw.js', onLoad:function(){
+		        		me.dynamicLayerAdmin = Ext.create('Sgis.map.DynamicLayerAdmin', me.map);
+			        	me.searchLayerAdmin = Ext.create('Sgis.map.SearchLayerAdmin', me.map);
+		        		me.toolbar = new ash.map.toolbar.CustomDraw(me.map, {showTooltips:false}, true, me.map.graphics);
+			        	dojo.connect(me.toolbar, "onDrawEnd", function(event){
+			    			me.map.setMapCursor("default");
+			    			me.measure(event);
+			    		});
+		        	}, onError:function(){}});
+		        	
+		        	Ext.Loader.loadScript({url:'app/map/task/CustomPrintTask.js', onLoad:function(){
+		        		me.printTask = new ash.map.task.CustomPrintTask(me.map, "_mapDiv_", "http://localhost:6080/arcgis");
+		        	}, onError:function(){}});
+		        	
 		        	me.smpLineSymbol = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0,0,255,0.8]), 2);
 		    		me.simpleFillSymbol= new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, me.smpLineSymbol, new dojo.Color([0,0,255,0.1]));
 		    		me.mapEventDefine()
@@ -96,6 +106,9 @@ Ext.define('Sgis.map.CoreMap', {
         		me.extentUnReIdx = me.extentReg.length-1;
     		}
     		me.extentRegAble = true;
+    		if(me.backAndWhite && Sgis.getApplication().browser!='Chrome' && Sgis.getApplication().browser!='Opera'){
+    			me.baseMapGrayExtentChange();
+    		}
 		});
     },
     
@@ -157,7 +170,7 @@ Ext.define('Sgis.map.CoreMap', {
 		    getTileUrl: function(level, row, col) {
 		    	var newrow = row + (Math.pow(2, level) * 47);
       			var newcol = col + (Math.pow(2, level) * 107);
-		    	return "http://xdworld.vworld.kr:8080/2d/Base/201301/" + level + "/" + col + "/" + row + ".png";
+		    	return esri.config.defaults.io.proxyUrl + "?http://xdworld.vworld.kr:8080/2d/Base/201301/" + level + "/" + col + "/" + row + ".png";
 		    }	
 		  });
 		var baseMap = new CustomMapsLayer();
@@ -229,11 +242,40 @@ Ext.define('Sgis.map.CoreMap', {
 	  	});
 	},
 	
+	baseMapGrayExtentChange:function(){
+		var me = this;
+		if(me.backAndWhite && Sgis.getApplication().browser!='Chrome' && Sgis.getApplication().browser!='Opera'){
+			var imgs = Ext.query('.layerTile');
+			for(var i=0; i<imgs.length; i++){
+				imgs[i].src = me.grayImage(imgs[i]);
+			}
+		}
+	},
+	
+	
 	baseMapGray:function(mode){
-		if(mode){
-			document.getElementById("_mapDiv__layer0").style['-webkit-filter']="grayscale(100%)";
+		var me = this;
+		me.backAndWhite = mode;
+		if(Sgis.getApplication().browser=='Chrome' || Sgis.getApplication().browser=='Opera'){
+			if(mode){
+				document.getElementById("_mapDiv__layer0").style['-webkit-filter']="grayscale(100%)";
+			}else{
+				document.getElementById("_mapDiv__layer0").style['-webkit-filter']="";
+			}
 		}else{
-			document.getElementById("_mapDiv__layer0").style['-webkit-filter']="";
+			if(mode){
+				var imgs = Ext.query('.layerTile');
+				for(var i=0; i<imgs.length; i++){
+					imgs[i].src = me.grayImage(imgs[i]);
+				}
+			}else{
+				var level = me.map.getLevel();
+				var deferred = me.map.setLevel(1);
+				deferred.then(function(value){
+					me.map.setLevel(level);
+				},function(error){
+				});
+			}
 		}
 	},
 	
@@ -249,7 +291,7 @@ Ext.define('Sgis.map.CoreMap', {
 	grayImage:function(imgObj){
 		var canvas = document.createElement('canvas');
 	    var canvasContext = canvas.getContext('2d');
-	     
+	    console.log("xxxx")
 	    var imgW = imgObj.width;
 	    var imgH = imgObj.height;
 	    canvas.width = imgW;
@@ -267,6 +309,7 @@ Ext.define('Sgis.map.CoreMap', {
 	            imgPixels.data[i + 2] = avg;
 	        }
 	    }
+	    
 	    canvasContext.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
 	    return canvas.toDataURL();
 	},
