@@ -18,6 +18,10 @@ Ext.define('Sgis.map.CoreMap', {
 	measureScope:null,
 	smpLineSymbol:null, 
 	simpleFillSymbol:null,
+	fullExtent:null,
+	extentReg:[],
+	extentRegAble:true,
+	extentUnReIdx:0,
 	
 //	initComponent: function() {
 //		this.callParent();
@@ -76,8 +80,23 @@ Ext.define('Sgis.map.CoreMap', {
 		    		});
 		        	me.smpLineSymbol = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0,0,255,0.8]), 2);
 		    		me.simpleFillSymbol= new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, me.smpLineSymbol, new dojo.Color([0,0,255,0.1]));
+		    		me.mapEventDefine()
 		        	Sgis.getApplication().coreMap = me;
         });
+    },
+    
+    mapEventDefine:function(){
+    	var me = this;
+    	dojo.connect(this.map, "onExtentChange", function(extent){
+    		if(me.extentRegAble){
+    			if(me.extentReg.length>30){
+        			me.extentReg.splice(0, 1);
+        		}
+        		me.extentReg.push(extent);
+        		me.extentUnReIdx = me.extentReg.length-1;
+    		}
+    		me.extentRegAble = true;
+		});
     },
     
     baseMapInit: function(){
@@ -114,7 +133,7 @@ Ext.define('Sgis.map.CoreMap', {
 		          ]
 		      });
 		      
-		      this.fullExtent = new esri.geometry.Extent({
+		      me.fullExtent = this.fullExtent = new esri.geometry.Extent({
 		    	  xmin: 12728905.446270483,
 		    	  ymin: 3409091.461517964,
 		    	  xmax: 15766818.698435722,
@@ -208,5 +227,69 @@ Ext.define('Sgis.map.CoreMap', {
 	    me.geometryService.areasAndLengths(params, function(result){
 	    	me.measureCallback.apply(me.measureScope, [result]);
 	  	});
+	},
+	
+	baseMapGray:function(mode){
+		if(mode){
+			document.getElementById("_mapDiv__layer0").style['-webkit-filter']="grayscale(100%)";
+		}else{
+			document.getElementById("_mapDiv__layer0").style['-webkit-filter']="";
+		}
+	},
+	
+	fullExtentMove:function(){
+		var me = this;
+		var deferred = me.map.setExtent(me.fullExtent, true);
+		deferred.then(function(value){
+			me.map.setLevel(1+6);
+		},function(error){
+		});
+	},
+	
+	grayImage:function(imgObj){
+		var canvas = document.createElement('canvas');
+	    var canvasContext = canvas.getContext('2d');
+	     
+	    var imgW = imgObj.width;
+	    var imgH = imgObj.height;
+	    canvas.width = imgW;
+	    canvas.height = imgH;
+	     
+	    canvasContext.drawImage(imgObj, 0, 0);
+	    var imgPixels = canvasContext.getImageData(0, 0, imgW, imgH);
+	     
+	    for(var y = 0; y < imgPixels.height; y++){
+	        for(var x = 0; x < imgPixels.width; x++){
+	            var i = (y * 4) * imgPixels.width + x * 4;
+	            var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
+	            imgPixels.data[i] = avg; 
+	            imgPixels.data[i + 1] = avg; 
+	            imgPixels.data[i + 2] = avg;
+	        }
+	    }
+	    canvasContext.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
+	    return canvas.toDataURL();
+	},
+	
+	prevExtentMove:function(){
+		var me = this;
+		me.extentRegAble = false;
+		me.extentUnReIdx--;
+		if(me.extentUnReIdx > -1){
+			me.map.setExtent(me.extentReg[me.extentUnReIdx], true);
+		}else{
+			me.extentUnReIdx == 0;
+		}
+	},
+	
+	nextExtentMove:function(){
+		var me = this;
+		me.extentRegAble = false;
+		me.extentUnReIdx++;
+		if(me.extentUnReIdx < me.extentReg.length){
+			me.map.setExtent(me.extentReg[me.extentUnReIdx], true);
+		}else{
+			me.extentUnReIdx = me.extentReg.length - 1;
+		}
 	}
 });
