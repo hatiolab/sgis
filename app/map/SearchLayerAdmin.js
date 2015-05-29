@@ -88,7 +88,7 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
         me.sourceGraphicLayer.clear();
         me.sourceGraphicLayer.add(graphic);
         
-        var symbol = new esri.symbol.PictureMarkerSymbol('resources/images/btn_close.png' , 16, 16);
+        var symbol = new esri.symbol.PictureMarkerSymbol('http://' + window.location.hostname + ':8080/resources/images/btn_close.png' , 16, 16);
         var point
         if(event.type=='polygon'){
         	var finalRing = event.rings[0][event.rings[0].length-1];
@@ -267,9 +267,9 @@ Ext.define('Sgis.map.SearchLayerAdmin', {
 						Ext.each(results.features, function(obj, index) {
 							var pictureMarkerSymbol;
 							if(layer=='5'){
-								pictureMarkerSymbol = new esri.symbol.PictureMarkerSymbol(layer.iconInfo , 12, 12);
+								pictureMarkerSymbol = new esri.symbol.PictureMarkerSymbol('http://' + window.location.hostname + ':8080/' + layer.iconInfo , 12, 12);
 							}else{
-								pictureMarkerSymbol = new esri.symbol.PictureMarkerSymbol(layer.iconInfo , 16, 16);
+								pictureMarkerSymbol = new esri.symbol.PictureMarkerSymbol('http://' + window.location.hostname + ':8080/' + layer.iconInfo , 16, 16);
 							}
 							obj.setSymbol(pictureMarkerSymbol);
 				    		me.targetGraphicLayer.add(obj);

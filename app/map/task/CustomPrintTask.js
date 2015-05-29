@@ -14,7 +14,17 @@ dojo.declare("ash.map.task.CustomPrintTask", null, {
 		
 	},
 	
-	execute:function(){
+	print:function(){
+		var me = this;
+		me.execute("print");
+	},
+	
+	capture:function(){
+		var me = this;
+		me.execute("capture");
+	},
+	
+	execute:function(mode){
 		var me = this;
 		var svgInfo = $('#'+me.mapDivId+' svg').parent().html();
 		var layerIds = me.map.layerIds;
@@ -56,8 +66,15 @@ dojo.declare("ash.map.task.CustomPrintTask", null, {
 		me.convertImgToBase64Exe(imageInfos, function(){
 			var obj = {imageInfos:JSON.stringify(imageInfos), svgInfo:svgInfo, width:$('#'+me.mapDivId).width(), height:$('#'+me.mapDivId).height()};
 			$.post(esri.config.defaults.io.proxyUrl + "?" + me.arcServerUrl +"/customPrintTask.jsp", obj, function(data){
-				$('#__fileDownloadIframe__').remove();
-				$('body').append('<iframe src='+esri.config.defaults.io.proxyUrl+'?'+data.url+' id="__fileDownloadIframe__" name="__fileDownloadIframe__" width="0" height="0" style="display:none;"/>');
+				if(mode=="print"){
+					var popup = window.open(esri.config.defaults.io.proxyUrl+'?'+data.url+'&print=Y', 'newWindow', "width=1000,height=700");
+					popup.focus(); //required for IE
+					popup.print();
+				}else if(mode=="capture"){
+					$('#__fileDownloadIframe__').remove();
+					$('body').append('<iframe src='+esri.config.defaults.io.proxyUrl+'?'+data.url+' id="__fileDownloadIframe__" name="__fileDownloadIframe__" width="0" height="0" style="display:none;"/>');
+				}
+				
 				me.onComplete("complete");
 	   		},"json").error(function(){
 	   		});

@@ -72,7 +72,7 @@ Ext.define('Sgis.map.CoreMap', {
 		        	});
 		        	me.baseMapInit();
 		        	me.map.setLevel(1+6);
-		        	me.geometryService = new esri.tasks.GeometryService("http://localhost:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+		        	me.geometryService = new esri.tasks.GeometryService("http://cetech.iptime.org:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer");
 		        	
 		        	Ext.Loader.loadScript({url:'app/map/toolbar/CustomDraw.js', onLoad:function(){
 		        		me.dynamicLayerAdmin = Ext.create('Sgis.map.DynamicLayerAdmin', me.map);
@@ -85,7 +85,7 @@ Ext.define('Sgis.map.CoreMap', {
 		        	}, onError:function(){}});
 		        	
 		        	Ext.Loader.loadScript({url:'app/map/task/CustomPrintTask.js', onLoad:function(){
-		        		me.printTask = new ash.map.task.CustomPrintTask(me.map, "_mapDiv_", "http://localhost:6080/arcgis");
+		        		me.printTask = new ash.map.task.CustomPrintTask(me.map, "_mapDiv_", "http://cetech.iptime.org:6080/arcgis");
 		        	}, onError:function(){}});
 		        	
 		        	me.smpLineSymbol = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0,0,255,0.8]), 2);
