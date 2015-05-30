@@ -72,7 +72,7 @@ Ext.define('Sgis.view.north.North', {
 				xtype: 'button',
 				text: '흑백',
 				handler: 'onClickGray',
-				enableToggle: true,
+				enableToggle: true
 			},'->', {
 				id: 'mapmode',
 				xtype: 'cycle',

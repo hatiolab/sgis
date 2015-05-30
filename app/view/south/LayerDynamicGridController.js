@@ -46,32 +46,57 @@ Ext.define('Sgis.view.south.LayerDynamicGridController', {
 	},
 	
     searchComplteHandler: function(results) {
-		var result = results[0];
-		// console.log(result);
-		var grid = this.getView();
-		var store = grid.getStore();
+		if(!results || results.length == 0) {
+			return;
+		}
 		
-		if(store == null || !store.fields) {
-			var data = this.getLayerDataAll(result);
-			grid.reconfigureDynamicGrid(data[0], data[1]);			
-		} else {
-			var data = this.getLayerData(result);
-			store.getProxy().setData(data);
-			store.read();
+		for(var i = 0 ; i < results.length ; i++) {
+			var result = results[i];
+			var grid = this.getView();
+			
+			// grid 인스턴스 마다 자기 레이어 데이터만 처리함 
+			if(grid.layerId == result.layerId) {
+				var store = grid.getStore();
+				if(store == null || !store.fields) {
+					var data = this.getLayerDataAll(result);
+					if(data && data[0] && data[1]) {
+						grid.reconfigureDynamicGrid(data[0], data[1]);
+					} else {
+						console.log('Result is invalid : ');
+						console.log(result);
+					}
+				} else {
+					var data = this.getLayerData(result);
+					if(data) {
+						store.getProxy().setData(data);
+						store.read();
+					}
+				}
+			}			
 		}
     },
 	
-	getLayerDataAll : function(results) {
-		var headers = this.getLayerMetadata(results);
-		var dataList = this.getLayerData(results);
-		return [headers, dataList];
+	getLayerDataAll : function(result) {
+		if(result) {
+			var headers = this.getLayerMetadata(result);
+			var dataList = this.getLayerData(result);
+			return [headers, dataList];			
+		} else {
+			return null;
+		}
 	},
 	
 	/**
 	 * Get Layer Columns Information
 	 */
-	getLayerMetadata : function(results) {
-		var fields = results.field;
+	getLayerMetadata : function(result) {
+		var fields = result.field;
+		if(!fields) {
+			console.log('Field is null : ');
+			console.log(result);
+			return null;
+		}
+		
 		var headers = [];
 		
 		for(var i = 0 ; i < fields.length ; i++) {
@@ -90,9 +115,21 @@ Ext.define('Sgis.view.south.LayerDynamicGridController', {
 	/**
 	 * Get Layer Data
 	 */
-	getLayerData : function(results) {
-		var headers = results.field;
-		var datum = results.datas;
+	getLayerData : function(result) {
+		var headers = result.field;
+		if(!headers) {
+			console.log('Field is null - ');
+			console.log(result);
+			return null;
+		}
+		
+		var datum = result.datas;
+		if(!datum) {
+			console.log('Datas is null - ');
+			console.log(result);
+			return null;
+		}
+		
 		var dataList = [];
 		
 		for(var i = 0 ; i < datum.length ; i++) {

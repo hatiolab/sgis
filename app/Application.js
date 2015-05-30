@@ -27,7 +27,8 @@ Ext.define('Sgis.Application', {
 		'Sgis.store.Area1Store',
 		'Sgis.store.Area2Store',
 		'Sgis.store.Area3Store',
-		'Sgis.store.LayerInfoStore'
+		'Sgis.store.LayerInfoStore',
+		'Sgis.store.ScaleInfoStore'
 	],
 	
 	views : [

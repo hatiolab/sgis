@@ -16,7 +16,7 @@ Ext.define('Sgis.view.south.LayerDynamicGrid', {
 
 	title : '',
 	
-	store : null,
+	store : Ext.create('Ext.data.Store'),
 
 	flex : 1,
 		
@@ -116,7 +116,13 @@ Ext.define('Sgis.view.south.LayerDynamicGrid', {
 		}
 		
 		var store = this.createDynamicStore(columns, dataList);
-		this.reconfigure(store, columns);
+		
+		if(columns) {
+			this.reconfigure(store, columns);
+		} else {
+			store.read();
+		}
+		
 		Ext.resumeLayouts(true);
 	},
 	
@@ -136,11 +142,11 @@ Ext.define('Sgis.view.south.LayerDynamicGrid', {
 				fields: fields,
 				data: dataList
 			});
-			
 		}
 
 		store.setPageSize(pageSize);
 		store.getProxy().setData(dataList);
+		this.setStore(store);
 		this.bindPagingToolbar(store);
 		return store;
 	},

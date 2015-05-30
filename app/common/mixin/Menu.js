@@ -87,12 +87,12 @@ Ext.define('Cmm.mixin.Menu', function() {
 		return current;
 	}
 	
-	function removeSearchGrid(viewId) {
+	function removeSearchGrid(layerId) {
 		var south = Ext.getCmp('south');
 		var current = null;
 		
 		Ext.each(south.getLayout().getLayoutItems(), function(comp) {
-			if(comp.layerId == viewId) {
+			if(comp.layerId == layerId) {
 				current = comp;
 				return false;
 			}
@@ -106,12 +106,27 @@ Ext.define('Cmm.mixin.Menu', function() {
 			}
 		}
 	}
+	
+	function findSearchGrid(layerId) {
+		var south = Ext.getCmp('south');
+		var current = null;
+		
+		Ext.each(south.getLayout().getLayoutItems(), function(comp) {
+			if(comp.layerId == layerId) {
+				current = comp;
+				return false;
+			}
+		});
+		
+		return current;		
+	}
 
 	return {
 		show: show,
 		popup: popup,
 		addSearchGrid: addSearchGrid,
-		removeSearchGrid: removeSearchGrid
+		removeSearchGrid: removeSearchGrid,
+		findSearchGrid: findSearchGrid
 	};
 
 }());

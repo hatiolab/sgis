@@ -81,7 +81,7 @@ Ext.define('Sgis.view.north.measure.MeasureWindow', {
                                         xtype: 'label',
                                         flex: 1,
                                         id:'areaResult',
-                                        text: '',
+                                        text: ''
                                     }
                                 ]
                         }
